@@ -124,7 +124,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           let userId = message_event.message_create.sender_id
 
           //console.log(event);
-          /*
+
           let card_body = {
             "username": ""
             "network": "twitter DM"
@@ -137,39 +137,46 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               'x-api-key': process.env.SERVER_API_KEY
             },
             body: card_body
-          }*/
-
-          let msg = {};
-          msg.event = {
-                "type": "message_create",
-                "message_create": {
-                  "target": {
-                    "recipient_id": undefined
-                  },
-                  "message_data": {
-                    "text": "Please report using this link..."
-                  }
-                }
-              }
-          msg.event.message_create.target.recipient_id = userId;
-
-          // request options
-          var request_options = {
-            url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-            oauth: twitter.oauth,
-            json: true,
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: msg
           }
 
-          // POST request to send Direct Message
-          request.post(request_options, function (error, response, body) {
-            console.log('errors', error)
-            console.log('response', response)
-            console.log('body', body)
-          });
+          request.post(card_request_options, function(error, response, body){
+            if (!error) {
+              console.log('card:', body)
+              console.log('card id:', body.cardId)
+
+              let msg = {};
+              msg.event = {
+                    "type": "message_create",
+                    "message_create": {
+                      "target": {
+                        "recipient_id": undefined
+                      },
+                      "message_data": {
+                        "text": "Please report using this link https://cards.riskmap.us/flood/test123" +
+                      }
+                    }
+                  }
+              msg.event.message_create.target.recipient_id = userId;
+
+              // request options
+              var request_options = {
+                url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
+                oauth: twitter.oauth,
+                json: true,
+                headers: {
+                  'content-type': 'application/json'
+                },
+                body: msg
+              }
+
+              // POST request to send Direct Message
+              request.post(request_options, function (error, response, body) {
+                console.log('errors', error)
+                console.log('response', response)
+                console.log('body', body)
+              });
+            }
+          })
         }
       })
       callback();
