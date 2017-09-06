@@ -126,20 +126,21 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           //console.log(event);
 
           let card_body = {
-            "username": ""
-            "network": "twitter DM"
+            "username": "test",
+            "network": "twitter DM",
             "language": "en"
           }
 
-          let card_request_options = {
+          var card_request_options = {
             url: 'https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards',
             headers: {
+              'content-type': 'application/json',
               'x-api-key': process.env.SERVER_API_KEY
             },
             body: card_body
           }
 
-          request.post(card_request_options, function(error, response, body){
+          request.post(JSON.stringify(card_request_options), function(error, response, body){
             if (!error) {
               console.log('card:', body)
               console.log('card id:', body.cardId)
@@ -152,7 +153,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                         "recipient_id": undefined
                       },
                       "message_data": {
-                        "text": "Please report using this link https://cards.riskmap.us/flood/test123" +
+                        "text": "Please report using this link https://cards.riskmap.us/flood/test123"
                       }
                     }
                   }
