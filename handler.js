@@ -119,7 +119,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     if (event.body.direct_message_events){
 
 
-      _.forEach(event.body.direct_message_events, function(message_event){
+      event.body.direct_message_events.forEach(function(message_event){
         if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitter.user_id){
           let userId = message_event.message_create.sender_id
 
