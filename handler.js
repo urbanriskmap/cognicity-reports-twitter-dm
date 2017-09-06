@@ -121,21 +121,25 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       //message_processor.process(request.body)
 
 
-    var userId = event.body.id_str;
+      let userId = event.body.direct_message_events[0].message_create.sender_id
 
-    var msg = {
-      "event": {
-        "type": "message_create",
-        "message_create": {
-          "target": {
-            "recipient_id": userId
-          },
-          "message_data": {
-            "text": "here is a link..."
+      console.log(event)
+
+      let message = {};
+      default_message.event = {
+            "type": "message_create",
+            "message_create": {
+              "target": {
+                "recipient_id": undefined
+              },
+              "message_data": {
+                "text": "Please report using this link..."
+              }
+            }
           }
-        }
-      }
-    }
+    default_message.event.message_create.target.recipient_id = userId;
+
+    console.log(default_message.event);
 
     // request options
     var request_options = {
@@ -145,17 +149,15 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       headers: {
         'content-type': 'application/json'
       },
-      body: msg
+      body: message
     }
 
     // POST request to send Direct Message
     request.post(request_options, function (error, response, body) {
-      if(callback) {
-        callback(error, response, body)
-      }
+      console.log(error, response, body)
     });
 
-      callback();
+    callback();
     }
 };
 
