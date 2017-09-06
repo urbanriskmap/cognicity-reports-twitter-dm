@@ -142,7 +142,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
         });
 
       response.send('200 OK');
-    })
+    }
 };
 
 module.exports.twitterReply = (event, context, callback) => {
