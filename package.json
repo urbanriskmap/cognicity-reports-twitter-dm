@@ -13,7 +13,6 @@
   "author": "Tomas Holderness",
   "license": "GPL-3.0",
   "dependencies": {
-    "crypto": "^1.0.1",
     "dotenv": "^4.0.0",
     "request": "^2.81.0",
     "twitter": "^1.7.1"
