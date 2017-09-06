@@ -70,10 +70,13 @@ function getCardLink(username, network, language, callback) {
   console.log(card_request);
   // Get a card from Cognicity server
   request({
-    url: options.host + options.path,
-    method: options.method,
-    headers: options.headers,
-    port: options.port,
+    url: 'https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards',
+    method: 'post',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': process.env.SERVER_API_KEY
+    },
+    port: 80,
     json: true,
     body: card_request
   }, function(error, response, body) {
@@ -125,65 +128,50 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
           //console.log(event);
 
-          let card_body = {
-            "username": "test",
-            "network": "twitter DM",
-            "language": "en"
-          }
-
-          var card_request_options = {
-            url: 'https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards',
-            headers: {
-              'content-type': 'application/json',
-              'x-api-key': process.env.SERVER_API_KEY
-            },
-            body: card_body
-          }
-
-          request.post(JSON.stringify(card_request_options), function(error, response, body){
-            if (!error) {
-              console.log('card:', body)
-              console.log('card id:', body.cardId)
-
-              let msg = {};
-              msg.event = {
-                    "type": "message_create",
-                    "message_create": {
-                      "target": {
-                        "recipient_id": undefined
-                      },
-                      "message_data": {
-                        "text": "Please report using this link https://cards.riskmap.us/flood/test123"
+            getCardLink("test", "twitter DM", "en", function(err, res){
+              if (err === null){
+                let msg = {};
+                msg.event = {
+                      "type": "message_create",
+                      "message_create": {
+                        "target": {
+                          "recipient_id": undefined
+                        },
+                        "message_data": {
+                          "text": "Please report using this link https://cards.riskmap.us/flood/test123"
+                        }
                       }
                     }
-                  }
-              msg.event.message_create.target.recipient_id = userId;
+                msg.event.message_create.target.recipient_id = userId;
 
-              // request options
-              var request_options = {
-                url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-                oauth: twitter.oauth,
-                json: true,
-                headers: {
-                  'content-type': 'application/json'
-                },
-                body: msg
+                // request options
+                var request_options = {
+                  url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
+                  oauth: twitter.oauth,
+                  json: true,
+                  headers: {
+                    'content-type': 'application/json'
+                  },
+                  body: msg
+                }
+
+                // POST request to send Direct Message
+                request.post(request_options, function (error, response, body) {
+                  console.log('errors', error)
+                  console.log('response', response)
+                  console.log('body', body)
+                });
               }
-
-              // POST request to send Direct Message
-              request.post(request_options, function (error, response, body) {
-                console.log('errors', error)
-                console.log('response', response)
-                console.log('body', body)
-              });
+              else {
+                console.log("error getting card link")
+              }
+            })
             }
           })
+        callback();
         }
-      })
-      callback();
       }
     }
-};
 
 module.exports.twitterReply = (event, context, callback) => {
   //This module listens in to SNS Twitter topic and reads the message published
