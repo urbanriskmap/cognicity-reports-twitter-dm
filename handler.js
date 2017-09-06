@@ -126,7 +126,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       console.log(event)
 
       let message = {};
-      default_message.event = {
+      message.event = {
             "type": "message_create",
             "message_create": {
               "target": {
@@ -137,9 +137,9 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               }
             }
           }
-    default_message.event.message_create.target.recipient_id = userId;
+    message.event.message_create.target.recipient_id = userId;
 
-    console.log(default_message.event);
+    console.log(message.event);
 
     // request options
     var request_options = {
