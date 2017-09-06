@@ -154,7 +154,8 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
     // POST request to send Direct Message
     request.post(request_options, function (error, response, body) {
-      console.log(error, response, body)
+      console.log(error)
+      console.log(body.status)
     });
 
     callback();
