@@ -115,11 +115,37 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       //var requestBody = JSON.parse(event.body);
       //message_processor.process(request.body)
 
-      response.send('200 OK')
+
+    var body = JSON.parse(event.body);
+    var userId = body.id_str;
+
+    var msg = {
+      "event": {
+        "type": "message_create",
+        "message_create": {
+          "target": {
+            "recipient_id": userId
+          },
+          "message_data": {
+            "text": "here is a link..."
+          }
+        }
+      }
+    }
+
+      twitterClient.post('direct_messages/new', msg)
+        .then(function(data){
+          console.log('Message sent: ' + data)
+        })
+        .catch(function(error){
+          console.log('Error sending message: ' + error)
+        });
+
+      response.send('200 OK');
     })
 };
 
-module.exports.twitterReply = (event, context, callback) => {
+/*module.exports.twitterReply = (event, context, callback) => {
   //This module listens in to SNS Twitter topic and reads the message published
   var message = JSON.parse(event.Records[0].Sns.Message);
   console.log('Message received from SNS topic: ' + message);
@@ -130,4 +156,4 @@ module.exports.twitterReply = (event, context, callback) => {
 
   //Make a POST call to send a tweet to the user
   sendTweet(messageText, message.username);
-};
+};/
