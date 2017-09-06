@@ -3,13 +3,22 @@ const crypto = require('crypto');
 require('dotenv').config();
 
 // Twitter Client to send reply tweets
-var Twitter = require('twitter');
-var twitterClient = new Twitter({
+//var Twitter = require('twitter');
+//var twitterClient = new Twitter({
+//  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+//  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+//  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+//  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+//});
+
+let twitter = {}
+
+twitter.oauth = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-});
+  token: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+}
 
 // GRASP card
 const options = {
@@ -112,8 +121,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       //message_processor.process(request.body)
 
 
-    var body = JSON.parse(event.body);
-    var userId = body.id_str;
+    var userId = event.body.id_str;
 
     var msg = {
       "event": {
@@ -129,15 +137,25 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       }
     }
 
-      twitterClient.post('direct_messages/new', msg)
-        .then(function(data){
-          console.log('Message sent: ' + data)
-        })
-        .catch(function(error){
-          console.log('Error sending message: ' + error)
-        });
+    // request options
+    var request_options = {
+      url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
+      oauth: twitter.oauth,
+      json: true,
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: msg
+    }
 
-      response.send('200 OK');
+    // POST request to send Direct Message
+    request.post(request_options, function (error, response, body) {
+      if(callback) {
+        callback(error, response, body)
+      }
+    });
+
+      callback();
     }
 };
 
