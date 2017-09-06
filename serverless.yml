@@ -1,15 +1,15 @@
 service: riskmapbot
 
 custom:
-  projectName: twitterbwot
+  projectName: twitterbot
 
 provider:
   name: aws
   runtime: nodejs6.10
-  stage: dev
-  region: ap-south-1
+  stage: prod
+  region: us-west-2
   stackTags:
-    area: "USA"
+    area: "US"
 
 # You can overwrite defaults by adding the following
 #  stage: dev
@@ -20,8 +20,10 @@ functions:
   twitterDMWebhook: # Lambda that gets triggered when user starts a conversation with Facebook Messenger bot
     handler: handler.twitterDMWebhook
     environment:
-      FACEBOOK_VALIDATION_TOKEN: ${file(./env.yml):facebookvalidationtoken}
-      FACEBOOK_PAGE_ACCESS_TOKEN: ${file(./env.yml):facebookpageaccesstoken}
+      TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
+      TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_key}
+      TWITTER_ACCESS_TOKEN_KEY: ${file(./env.yml):twitter_access_token_key}
+      TWITTER_ACCESS_TOKEN_SECRET: ${file(./env.yml):twitter_access_token_secret}
       DEFAULT_LANG: ${file(./env.yml):defaultlang}
       FRONTEND_CARD_PATH: ${file(./env.yml):frontendcardpath}
       FRONTEND_MAP_PATH: ${file(./env.yml):frontendmappath}
@@ -30,18 +32,16 @@ functions:
       SERVER_PORT: ${file(./env.yml):serverport}
     events:
       - http:
-          path: facebook/webhook
+          path: twitter/webhook
           method: GET # This webhook lambda is called by Facebook to verify the tokens
           integration: lambda
-      - http:
-          path: facebook/webhook
-          method: POST # On POST, this lambda talks to the cognicity server to fetch unique cardId, constructs a response and sends the card OTL to the user
-          integration: lambda
-  facebookReply: # Lambda that gets triggered when a message is published to the SNS topic Facebook
-    handler: handler.facebookReply
+  twitterReply: # Lambda that gets triggered when a message is published to the SNS topic Facebook
+    handler: handler.twitterReply
     environment:
-      FACEBOOK_VALIDATION_TOKEN: ${file(./env.yml):facebookvalidationtoken}
-      FACEBOOK_PAGE_ACCESS_TOKEN: ${file(./env.yml):facebookpageaccesstoken}
+      TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
+      TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}
+      TWITTER_ACCESS_TOKEN_KEY: ${file(./env.yml):twitter_access_token_key}
+      TWITTER_ACCESS_TOKEN_SECRET: ${file(./env.yml):twitter_access_token_secret}
       DEFAULT_LANG: ${file(./env.yml):defaultlang}
       FRONTEND_CARD_PATH: ${file(./env.yml):frontendcardpath}
       FRONTEND_MAP_PATH: ${file(./env.yml):frontendmappath}
@@ -49,4 +49,4 @@ functions:
       SERVER_PATH: ${file(./env.yml):serverpath}
       SERVER_PORT: ${file(./env.yml):serverport}
     events:
-      - sns: Facebook
+      - sns: Twitter
