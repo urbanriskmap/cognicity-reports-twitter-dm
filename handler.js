@@ -88,12 +88,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       var hash = crypto.createHmac('sha256', process.env.TWITTER_APP_CONSUMER_SECRET).update(crc_token).digest('base64')
 
       const response = {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
-          "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
-        },
-        body: JSON.stringify({ "response_token": 'sha256=' + hash })
+        "response_token": { 'sha256=' + hash }
       };
       callback(null, response);
     } else {
