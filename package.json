@@ -1,0 +1,21 @@
+{
+  "name": "twitter-bwot",
+  "version": "0.0.1",
+  "description": "Twitter DM bot runnning on AWS lambda",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "twitter"
+  ],
+  "author": "Tomas Holderness",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "dot-env": "0.0.1",
+    "request": "^2.81.0",
+    "twitter": "^1.7.1"
+  }
+}
