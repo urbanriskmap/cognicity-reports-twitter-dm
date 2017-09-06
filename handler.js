@@ -94,11 +94,11 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     var crc_token = event.query['crc_token']
 
     if (crc_token) {
-      var hash = crypto.createHmac('sha256', process.env.TWITTER_APP_CONSUMER_SECRET).update(crc_token).digest('base64')
+      var hash = crypto.createHmac('sha256', process.env.TWITTER_APP_CONSUMER_SECRET).update(crc_token).digest('base64');
 
-      var hashstring = 'sha256=' + hash
+      var hashstring = 'sha256=' + hash;
 
-      var response = JSON.parse('{"response_token": "'+hashstring+'"}')
+      var response = JSON.parse('{"response_token": "'+hashstring+'"}');
 
       callback(null, response);
     } else {
