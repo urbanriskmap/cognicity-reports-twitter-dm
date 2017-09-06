@@ -12,7 +12,7 @@ require('dotenv').config();
 //});
 
 let twitter = {}
-
+twitter.user_id =
 twitter.oauth = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -88,7 +88,6 @@ function getCardLink(username, network, language, callback) {
 
 // Webhook handler - This is the method called by Facebook when you verify webhooks for the app
 module.exports.twitterDMWebhook = (event, context, callback) => {
-  console.log(JSON.stringify(event));
   if (event.method === 'GET') {
 
     var crc_token = event.query['crc_token']
@@ -116,50 +115,65 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
   if (event.method === 'POST') {
 
-      // replace this with your own bot logic
-      //var requestBody = JSON.parse(event.body);
-      //message_processor.process(request.body)
+
+    if (event.body.direct_message_events){
 
 
-      let userId = event.body.direct_message_events[0].message_create.sender_id
+      _.forEach(event.body.direct_message_events, function(message_event){
+        if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitter.user_id){
+          let userId = message_event.message_create.sender_id
 
-      console.log(event)
-
-      let message = {};
-      message.event = {
-            "type": "message_create",
-            "message_create": {
-              "target": {
-                "recipient_id": undefined
-              },
-              "message_data": {
-                "text": "Please report using this link..."
-              }
-            }
+          //console.log(event);
+          /*
+          let card_body = {
+            "username": ""
+            "network": "twitter DM"
+            "language": "en"
           }
-    message.event.message_create.target.recipient_id = userId;
 
-    console.log(message.event);
+          let card_request_options = {
+            url: 'https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards',
+            headers: {
+              'x-api-key': process.env.SERVER_API_KEY
+            },
+            body: card_body
+          }*/
 
-    // request options
-    var request_options = {
-      url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-      oauth: twitter.oauth,
-      json: true,
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: message
-    }
+          let msg = {};
+          msg.event = {
+                "type": "message_create",
+                "message_create": {
+                  "target": {
+                    "recipient_id": undefined
+                  },
+                  "message_data": {
+                    "text": "Please report using this link..."
+                  }
+                }
+              }
+          msg.event.message_create.target.recipient_id = userId;
 
-    // POST request to send Direct Message
-    request.post(request_options, function (error, response, body) {
-      console.log('errors', error)
-      console.log('response', response)
-      console.log('body', body)
-    });
+          // request options
+          var request_options = {
+            url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
+            oauth: twitter.oauth,
+            json: true,
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: msg
+          }
 
-    callback();
+          // POST request to send Direct Message
+          request.post(request_options, function (error, response, body) {
+            console.log('errors', error)
+            console.log('response', response)
+            console.log('body', body)
+          });
+        }
+      })
+      callback();
+      }
     }
 };
 
