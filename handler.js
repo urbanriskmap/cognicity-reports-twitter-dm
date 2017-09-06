@@ -89,7 +89,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
       var hashstring = 'sha256=' + hash
 
-      var response = JSON.stringify({"response_token": hashstring})
+      var response = JSON.parse('{"response_token": "'+hashstring+'"}')
 
       callback(null, response);
     } else {
