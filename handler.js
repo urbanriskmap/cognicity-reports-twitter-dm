@@ -82,7 +82,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
   console.log(JSON.stringify(event));
   if (event.method === 'GET') {
 
-    var crc_token = request.query['crc_token']
+    var crc_token = event.query['crc_token']
 
     if (crc_token) {
       var hash = crypto.createHmac('sha256', twitterClient.consumer_secret).update(crc_token).digest('base64')
