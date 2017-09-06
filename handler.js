@@ -88,7 +88,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       var hash = crypto.createHmac('sha256', process.env.TWITTER_APP_CONSUMER_SECRET).update(crc_token).digest('base64')
 
       const response = {
-        "response_token": { 'sha256=' + hash }
+        "response_token": JSON.stringify({ 'sha256=' + hash })
       };
       callback(null, response);
     } else {
