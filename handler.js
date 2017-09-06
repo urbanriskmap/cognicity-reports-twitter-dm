@@ -85,7 +85,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     var crc_token = event.query['crc_token']
 
     if (crc_token) {
-      var hash = crypto.createHmac('sha256', twitterClient.consumer_secret).update(crc_token).digest('base64')
+      var hash = crypto.createHmac('sha256', env.TWITTER_APP_CONSUMER_SECRET).update(crc_token).digest('base64')
 
       const response = {
         statusCode: 200,
