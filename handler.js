@@ -22,7 +22,7 @@ const options = {
 
 // GRASP operating regions
 const instance_regions = {
-  bwd: 'broward',
+  brw: 'broward',
 };
 
 // Replies to user
@@ -107,7 +107,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               console.log(cardId)
               if (err === null){
 
-                msg.event.message_data.text = "Please report using this link https://cards.riskmap.us/flood/" + cardId
+                msg.event.message_create.message_data.text = "Please report using this link https://cards.riskmap.us/flood/" + cardId
                 console.log('Prepared message: ' + JSON.stringify(msg))
                 twitter.sendMessage(msg, function(err, response){
                   if (err !== null){
@@ -117,7 +117,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 })
               }
               else {
-                msg.event.message_data.text = "Sorry there was an error, please try again later."
+                msg.event.message_create.message_data.text = "Sorry there was an error, please try again later."
                 twitter.sendMessage(msg, function(err, response){
                   if (err !== null){
                     console.log('Error sending message: ' + JSON.stringify(err));
