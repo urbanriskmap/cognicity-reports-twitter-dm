@@ -126,9 +126,9 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
         if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitter.user_id){
           let userId = message_event.message_create.sender_id
 
-          //console.log(event);
-
-            getCardLink("test", "twitter DM", "en", function(err, res){
+            //console.log(event);
+            // TODO add user
+            getCardLink("test", "twitter", process.env.DEFAULT_LANG, function(err, res){
 
               if (err === null){
                 let msg = {};
@@ -158,7 +158,8 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
                 // POST request to send Direct Message
                 request.post(request_options, function (error, response, body) {
-                  console.log('fired')
+                  console.log('fired');
+                  console.log(response);
 
                   //console.log('errors', error)
                   //console.log('response', response)
