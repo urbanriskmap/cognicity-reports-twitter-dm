@@ -6,8 +6,8 @@ require('dotenv').config();
 const twitter = require('./twitter');
 const cards = require('./cards');
 
-//twitterUserId = 905237435394560000 // @riskmapus
-twitterUserId = '905602080252977152' //@riskmapbot
+twitterUserId = 905237435394560000 // @riskmapus
+//twitterUserId = '905602080252977152' //@riskmapbot
 
 // GRASP card
 const options = {
