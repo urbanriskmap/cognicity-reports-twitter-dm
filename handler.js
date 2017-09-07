@@ -7,7 +7,7 @@ const twitter = require('./twitter');
 const cards = require('./cards');
 
 //twitterUserId = 905237435394560000 // @riskmapus
-twitterUserId = 905602080252977152 //@riskmapbot
+twitterUserId = '905602080252977152' //@riskmapbot
 
 // GRASP card
 const options = {
@@ -77,8 +77,8 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     if (event.body.direct_message_events){
       console.log('Number of messages in this event:' + event.body.direct_message_events.length)
       event.body.direct_message_events.forEach(function(message_event){
-        console.log(message_event);
-        console.log(message.event.message_create.sender_id);
+        console.log(message_event.message_create.sender_id);
+        console.log(twitterUserId);
         if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitterUserId){
 
           // Get user id for reply
