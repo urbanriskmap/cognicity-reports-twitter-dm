@@ -22,6 +22,7 @@ functions:
     environment:
       TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
       TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}
+      TWITTER_APP_CONSUMER_SECRET: ${file(./env.yml):twitter_app_consumer_secret}
       TWITTER_ACCESS_TOKEN_KEY: ${file(./env.yml):twitter_access_token_key}
       TWITTER_ACCESS_TOKEN_SECRET: ${file(./env.yml):twitter_access_token_secret}
       DEFAULT_LANG: ${file(./env.yml):defaultlang}
@@ -44,6 +45,7 @@ functions:
     environment:
       TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
       TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}
+      TWITTER_APP_CONSUMER_SECRET: ${file(./env.yml):twitter_app_consumer_secret}
       TWITTER_ACCESS_TOKEN_KEY: ${file(./env.yml):twitter_access_token_key}
       TWITTER_ACCESS_TOKEN_SECRET: ${file(./env.yml):twitter_access_token_secret}
       DEFAULT_LANG: ${file(./env.yml):defaultlang}
