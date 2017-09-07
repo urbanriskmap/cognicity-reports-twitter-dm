@@ -121,15 +121,15 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
     if (event.body.direct_message_events){
 
-      console.log(event.body.direct_message_events.length)
+      console.log('Number of messages in this event:' + event.body.direct_message_events.length)
       event.body.direct_message_events.forEach(function(message_event){
         if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitter.user_id){
           let userId = message_event.message_create.sender_id
 
             //console.log(event);
             // TODO add user
-            getCardLink("test", "twitter", process.env.DEFAULT_LANG, function(err, res){
-
+            getCardLink("test", "twitter", process.env.DEFAULT_LANG, function(err, cardId){
+              console.log(cardId)
               if (err === null){
                 let msg = {};
                 msg.event = {
@@ -159,14 +159,14 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 }
 
                 // POST request to send Direct Message
-                request.post(request_options, function (error, response, body) {
+                /*request.post(request_options, function (error, response, body) {
                   console.log('Post DM function fired');
                   console.log('Post DM function response from twitter server:' + JSON.stringify(response));
 
                   //console.log('errors', error)
                   //console.log('response', response)
                   //console.log('body', body)
-                });
+                });*/
               }
               else {
                 console.log("Error getting card link")
