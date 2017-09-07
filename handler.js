@@ -3,7 +3,8 @@ const crypto = require('crypto');
 require('dotenv').config();
 
 // Function for sending twitter DMs
-const twitter = require('./twitter')
+const twitter = require('./twitter');
+const cards = require('./cards');
 
 twitterUserId = 905237435394560000 // @riskmapus
 
@@ -41,39 +42,6 @@ function getInitialMessageText(language, cardId, disasterType) {
  */
 function getConfirmationMessageText(language, implementationArea, reportId) {
   return confirmations[language] + "\n" + process.env.FRONTEND_MAP_PATH + "/" + instance_regions[implementationArea] + '/' + reportId;
-}
-
-/*
- * Get one time card link from the server
- */
-function getCardLink(username, network, language, callback) {
-  var card_request = {
-    "username": username,
-    "network": network,
-    "language": language
-  };
-
-  console.log(options);
-  console.log(card_request);
-  // Get a card from Cognicity server
-  request({
-    url: 'https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards',
-    method: 'post',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': process.env.SERVER_API_KEY
-    },
-    port: 443,
-    json: true,
-    body: card_request
-  }, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      callback(null, body.cardId); //Return cardId on success
-    } else {
-      var err = 'Error getting card: ' + JSON.stringify(error) + JSON.stringify(response);
-      callback(err, null); // Return error
-    }
-  });
 }
 
 // Webhook handler - This is the method called by Facebook when you verify webhooks for the app
@@ -135,7 +103,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
           if (re.exec(message_event.message_create.message_data.text) !== null){
             // Call get card link function
-            getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
+            cards.getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
               console.log(cardId)
               if (err === null){
 
