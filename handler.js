@@ -2,23 +2,10 @@ const request = require('request');
 const crypto = require('crypto');
 require('dotenv').config();
 
-// Twitter Client to send reply tweets
-//var Twitter = require('twitter');
-//var twitterClient = new Twitter({
-//  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-//  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-//  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-//  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-//});
+// Function for sending twitter DMs
+const twitter = require('./twitter')
 
-let twitter = {}
-twitter.user_id = 905237435394560000 // riskmapus
-twitter.oauth = {
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  token: process.env.TWITTER_ACCESS_TOKEN_KEY,
-  token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-}
+twitterUserId = 905237435394560000 // @riskmapus
 
 // GRASP card
 const options = {
@@ -115,70 +102,78 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       callback(null, response);
     }
   }
-
+  // POST is incoming event
   if (event.method === 'POST') {
-
-
+    // Check for messages
     if (event.body.direct_message_events){
-
       console.log('Number of messages in this event:' + event.body.direct_message_events.length)
       event.body.direct_message_events.forEach(function(message_event){
-        if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitter.user_id){
+        if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitterUserId){
+
+          // Get user id for reply
           let userId = message_event.message_create.sender_id
 
-            //console.log(event);
-            // TODO add user
+          // Prepare message
+          let msg = {};
+          msg.event = {
+                "type": "message_create",
+                "message_create": {
+                  "target": {
+                    "recipient_id": undefined
+                  },
+                  "message_data": {
+                    "text": "RiskMap bot helps you report flooding in realtime. Send #flood to report."
+                  }
+                }
+              }
+          // Set recipient
+          msg.event.message_create.target.recipient_id = userId;
+
+          console.log(message_event.message_create.message_data.text)
+          // check for #flood
+          var re = /#flood/ig
+
+          if (re.exec(message_event.message_create.message_data.text) !== null){
+            // Call get card link function
             getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
               console.log(cardId)
-              console.log(message_event)
               if (err === null){
-                let msg = {};
-                msg.event = {
-                      "type": "message_create",
-                      "message_create": {
-                        "target": {
-                          "recipient_id": undefined
-                        },
-                        "message_data": {
-                          "text": "Please report using this link https://cards.riskmap.us/flood/" + cardId + " " + Date.now()
-                        }
-                      }
-                    }
-                msg.event.message_create.target.recipient_id = userId;
 
+                msg.event.message_data.text = "Please report using this link https://cards.riskmap.us/flood/" + cardId
                 console.log('Prepared message: ' + JSON.stringify(msg))
-
-                // request options
-                var request_options = {
-                  url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-                  oauth: twitter.oauth,
-                  json: true,
-                  headers: {
-                    'content-type': 'application/json'
-                  },
-                  body: msg
-                }
-
-                // POST request to send Direct Message
-                /*request.post(request_options, function (error, response, body) {
-                  console.log('Post DM function fired');
-                  console.log('Post DM function response from twitter server:' + JSON.stringify(response));
-
-                  //console.log('errors', error)
-                  //console.log('response', response)
-                  //console.log('body', body)
-                });*/
+                twitter.sendMessage(msg, function(err, response){
+                  if (err !== null){
+                    console.log('Error sending message: ' + JSON.stringify(err));
+                    console.log('Response from Twitter: ' + JSON.stringify((response)));
+                  }
+                })
               }
               else {
+                msg.event.message_data.text = "Sorry there was an error, please try again later."
+                twitter.sendMessage(msg, function(err, response){
+                  if (err !== null){
+                    console.log('Error sending message: ' + JSON.stringify(err));
+                    console.log('Response from Twitter: ' + JSON.stringify((response)));
+                  }
+                })
                 console.log("Error getting card link")
               }
             })
-            }
-          })
-        callback();
+          } else {
+            // Send default message
+            twitter.sendMessage(msg, function(err, response){
+              if (err !== null){
+                console.log('Error sending message: ' + JSON.stringify(err));
+                console.log('Response from Twitter: ' + JSON.stringify((response)));
+              }
+            })
+          }
         }
-      }
+      })
+    callback();
     }
+  }
+}
 
 module.exports.twitterReply = (event, context, callback) => {
   //This module listens in to SNS Twitter topic and reads the message published
