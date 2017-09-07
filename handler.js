@@ -129,6 +129,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           //console.log(event);
 
             getCardLink("test", "twitter DM", "en", function(err, res){
+
               if (err === null){
                 let msg = {};
                 msg.event = {
@@ -138,7 +139,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                           "recipient_id": undefined
                         },
                         "message_data": {
-                          "text": "Please report using this link https://cards.riskmap.us/flood/test123"
+                          "text": "Hello. Please report using this link https://cards.riskmap.us/flood/" + JSON.parse(res).cardId
                         }
                       }
                     }
