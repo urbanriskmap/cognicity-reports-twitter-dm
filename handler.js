@@ -128,7 +128,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
             //console.log(event);
             // TODO add user
-            getCardLink("test", "twitter", process.env.DEFAULT_LANG, function(err, cardId){
+            getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
               console.log(cardId)
               if (err === null){
                 let msg = {};
@@ -139,7 +139,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                           "recipient_id": undefined
                         },
                         "message_data": {
-                          "text": "Hello. Please report using this link https://cards.riskmap.us/flood/" + cardId
+                          "text": "Please report using this link https://cards.riskmap.us/flood/" + cardId
                         }
                       }
                     }
@@ -159,14 +159,14 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 }
 
                 // POST request to send Direct Message
-                /*request.post(request_options, function (error, response, body) {
+                request.post(request_options, function (error, response, body) {
                   console.log('Post DM function fired');
                   console.log('Post DM function response from twitter server:' + JSON.stringify(response));
 
                   //console.log('errors', error)
                   //console.log('response', response)
                   //console.log('body', body)
-                });*/
+                });
               }
               else {
                 console.log("Error getting card link")
