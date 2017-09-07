@@ -108,7 +108,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               console.log(cardId)
               if (err === null){
 
-                msg.event.message_create.message_data.text = "Please report using this link https://cards.riskmap.us/flood/" + cardId
+                msg.event.message_create.message_data.text = "Please report using this one-time link https://cards.riskmap.us/flood/" + cardId
                 console.log('Prepared message: ' + JSON.stringify(msg))
                 twitter.sendMessage(msg, function(err, response){
                   if (err !== null){
@@ -148,11 +148,27 @@ module.exports.twitterReply = (event, context, callback) => {
   //This module listens in to SNS Twitter topic and reads the message published
   var message = JSON.parse(event.Records[0].Sns.Message);
   console.log('Message received from SNS topic: ' + message);
+  // Prepare message
+  let msg = {};
+  msg.event = {
+        "type": "message_create",
+        "message_create": {
+          "target": {
+            "recipient_id": message.username
+          },
+          "message_data": {
+            "text": "Thank you for your report. You can access it using this link https://riskmap.us/map/broward/" + message.report_id
+          }
+        }
+      }
 
   //Construct the confirmation message to be sent to the user
-  var messageText = getConfirmationMessageText(message.language, message.implementation_area, message.report_id);
-  var messageText = '@' + message.username + ' ' + messageText;
+  //var messageText = getConfirmationMessageText(message.language, message.implementation_area, message.report_id);
+  //var messageText = '@' + message.username + ' ' + messageText;
 
   //Make a POST call to send a tweet to the user
-  sendTweet(messageText, message.username);
+  //sendTweet(messageText, message.username);
+  twitter.sendMessage(msg, function(err, response){
+
+  })
 };
