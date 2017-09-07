@@ -90,7 +90,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                     "recipient_id": undefined
                   },
                   "message_data": {
-                    "text": "RiskMap bot helps you report flooding in realtime. Send #flood to report."
+                    "text": "RiskMap bot helps you report flooding in realtime. Send #flood to report. In life-threatening situations always call 911."
                   }
                 }
               }
