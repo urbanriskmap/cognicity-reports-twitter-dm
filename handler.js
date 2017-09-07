@@ -77,8 +77,8 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     if (event.body.direct_message_events){
       console.log('Number of messages in this event:' + event.body.direct_message_events.length)
       event.body.direct_message_events.forEach(function(message_event){
-        console.log(message_event.message_create.sender_id);
-        console.log(twitterUserId);
+        console.log(message_event.message_create.sender_id[1]);
+        console.log(twitterUserId[1]);
         if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitterUserId){
 
           // Get user id for reply
