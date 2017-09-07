@@ -12,7 +12,7 @@ require('dotenv').config();
 //});
 
 let twitter = {}
-twitter.user_id =
+twitter.user_id = 905237435394560000 // riskmapus
 twitter.oauth = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -130,6 +130,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
             // TODO add user
             getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
               console.log(cardId)
+              console.log(message_event)
               if (err === null){
                 let msg = {};
                 msg.event = {
@@ -159,14 +160,14 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 }
 
                 // POST request to send Direct Message
-                request.post(request_options, function (error, response, body) {
+                /*request.post(request_options, function (error, response, body) {
                   console.log('Post DM function fired');
                   console.log('Post DM function response from twitter server:' + JSON.stringify(response));
 
                   //console.log('errors', error)
                   //console.log('response', response)
                   //console.log('body', body)
-                });
+                });*/
               }
               else {
                 console.log("Error getting card link")
