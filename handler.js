@@ -139,7 +139,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                           "recipient_id": undefined
                         },
                         "message_data": {
-                          "text": "Please report using this link https://cards.riskmap.us/flood/" + cardId
+                          "text": "Please report using this link https://cards.riskmap.us/flood/" + cardId + " " + Date.now()
                         }
                       }
                     }
