@@ -76,7 +76,7 @@ function getCardLink(username, network, language, callback) {
       'content-type': 'application/json',
       'x-api-key': process.env.SERVER_API_KEY
     },
-    port: 80,
+    port: 443,
     json: true,
     body: card_request
   }, function(error, response, body) {
