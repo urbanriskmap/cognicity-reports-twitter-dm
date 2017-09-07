@@ -102,7 +102,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
 
           console.log(message_event.message_create.message_data.text)
           // check for #flood
-          var re = /#flood/ig
+          var re = new RegExp(/\*flood/gi);
 
           if (re.exec(message_event.message_create.message_data.text) !== null){
             // Call get card link function
