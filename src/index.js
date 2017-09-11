@@ -122,7 +122,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                     console.log('Response from Twitter: ' + JSON.stringify((response)));
                   }
                 })
-                console.log("Error getting card link")
+                console.log("Error getting card link: " + JSON.stringify(err));
               })
           } else {
             // Send default message
