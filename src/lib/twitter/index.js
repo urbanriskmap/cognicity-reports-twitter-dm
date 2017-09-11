@@ -26,7 +26,7 @@ let sendMessage = function(message, callback){
   callback(null, null)
 
   // POST request to send Direct Message
-  request.post(request_options, function (error, response, body) {
+  /*request.post(request_options, function (error, response, body) {
     console.log('Post DM function fired');
     console.log('Post DM function response from twitter server:' + JSON.stringify(response));
 
@@ -34,7 +34,7 @@ let sendMessage = function(message, callback){
     //console.log('response', response)
     //console.log('body', body)
     callback(error, response)
-  });
+  });*/
 }
 
 module.exports = {sendMessage};
