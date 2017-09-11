@@ -1,5 +1,6 @@
 // Get Flood Card from CogniCity server
-const request = require('request');
+//const request = require('request');
+import request from 'request'
 
 // response
 
@@ -48,16 +49,12 @@ export default () => ({
       },
       port: 443,
       json: true,
-      body: card_request
+      body: cardRequest
     }, function(error, response, body) {
       //return processResponse(error, response, body);
       console.log('err 1: ' + JSON.stringify(error));
       console.log('res 1: ' + JSON.stringify(response));
-      //processResponse(error, response, body)
-      //  .then(resolve(cardId))
-      //  .catch((err) => {
-      //    reject(err)
-      //  });
+      return processResponse(error, response, body)
     });
   })
 });
