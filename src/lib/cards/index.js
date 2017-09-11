@@ -32,6 +32,7 @@ export default () => ({
   * @param {String} language User's language as two letter code (e.g. 'en')
   **/
   getCardLink: (username, network, language) => new Promise((resolve, reject) => {
+    console.log('get card link function fired')
     let cardRequest = {
       "username": username,
       "network": network,
