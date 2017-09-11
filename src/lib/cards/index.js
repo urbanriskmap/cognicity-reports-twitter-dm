@@ -49,7 +49,12 @@ export default () => ({
       json: true,
       body: card_request
     }, function(error, response, body) {
-      return processResponse(error, response, body);
+      //return processResponse(error, response, body);
+      processResponse(error, response, body)
+        .then(resolve(cardId))
+        .catch((err) => {
+          reject(err)
+        });
     });
   })
 });
