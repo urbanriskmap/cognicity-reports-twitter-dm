@@ -19,10 +19,16 @@ const processResponse = (error, response, body) => new Promise ((resolve, reject
 });
 
 /*
- * Get one time card link from the server
+ * Cards object for external functions
  */
-
 export default () => ({
+  /**
+  * Request a card link from server using request library
+  * @function getCardLink
+  * @param {String} username User's social media handle or unique identifier
+  * @param {String} network User's social media network (e.g. 'twitter')
+  * @param {String} language User's language as two letter code (e.g. 'en')
+  **/
   getCardLink: (username, network, language) => new Promise((resolve, reject) => {
     let cardRequest = {
       "username": username,

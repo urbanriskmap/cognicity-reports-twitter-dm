@@ -4,7 +4,7 @@ require('dotenv').config();
 
 // Function for sending twitter DMs
 const twitter = require('./lib/twitter/');
-import cards from './lib/cards/';
+const cards = require('./lib/cards/');
 
 //twitterUserId = '905237435394560000' // @riskmapus
 twitterUserId = '905602080252977152' //@riskmapbot
