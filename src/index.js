@@ -77,8 +77,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     if (event.body.direct_message_events){
       console.log('Number of messages in this event:' + event.body.direct_message_events.length)
       event.body.direct_message_events.forEach(function(message_event){
-        //console.log(message_event.message_create.sender_id);
-        //console.log(twitterUserId);
+
         if (message_event.type == 'message_create' && message_event.message_create.sender_id !== twitterUserId){
 
           // Get user id for reply
@@ -100,7 +99,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           // Set recipient
           msg.event.message_create.target.recipient_id = userId;
 
-          console.log(message_event.message_create.message_data.text)
+          console.log('message text: ' + message_event.message_create.message_data.text)
           // check for #flood
           var re = new RegExp(/\/flood/gi);
           if (re.exec(message_event.message_create.message_data.text) !== null){
@@ -126,7 +125,6 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 })
                 console.log("Error getting card link")
               })
-            }
           } else {
             // Send default message
             twitter.sendMessage(msg, function(err, response){
@@ -136,6 +134,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               }
             })
           }
+        }
       })
     callback();
     }
