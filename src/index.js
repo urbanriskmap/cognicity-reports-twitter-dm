@@ -113,8 +113,8 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                   if (err !== null){
                     console.log('Error sending message: ' + JSON.stringify(err));
                     console.log('Response from Twitter: ' + JSON.stringify((response)));
-                  })
-                }
+                  }
+                })
               })
               .catch((err) => {
                 msg.event.message_create.message_data.text = "Sorry there was an error, please try again later."
@@ -136,7 +136,6 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               }
             })
           }
-        }
       })
     callback();
     }
