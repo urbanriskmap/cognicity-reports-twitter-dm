@@ -105,20 +105,18 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           var re = new RegExp(/\/flood/gi);
           if (re.exec(message_event.message_create.message_data.text) !== null){
             // Call get card link function
-            cards().getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
-              console.log(cardId)
-              if (err === null){
-
+            cards().getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG)
+              .then((cardId) => {
                 msg.event.message_create.message_data.text = "Please report using this one-time link https://cards.riskmap.us/flood/" + cardId
                 console.log('Prepared message: ' + JSON.stringify(msg))
                 twitter.sendMessage(msg, function(err, response){
                   if (err !== null){
                     console.log('Error sending message: ' + JSON.stringify(err));
                     console.log('Response from Twitter: ' + JSON.stringify((response)));
-                  }
-                })
-              }
-              else {
+                  })
+                }
+              })
+              .catch((err) => {
                 msg.event.message_create.message_data.text = "Sorry there was an error, please try again later."
                 twitter.sendMessage(msg, function(err, response){
                   if (err !== null){
@@ -127,8 +125,8 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                   }
                 })
                 console.log("Error getting card link")
-              }
-            })
+              })
+            }
           } else {
             // Send default message
             twitter.sendMessage(msg, function(err, response){
