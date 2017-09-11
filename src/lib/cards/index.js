@@ -50,6 +50,8 @@ export default () => ({
       body: card_request
     }, function(error, response, body) {
       //return processResponse(error, response, body);
+      console.log('err 1: ' + JSON.stringify(error));
+      console.log('res 1: ' + JSON.stringify(response));
       processResponse(error, response, body)
         .then(resolve(cardId))
         .catch((err) => {
