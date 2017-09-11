@@ -54,7 +54,9 @@ export default () => ({
       //return processResponse(error, response, body);
       console.log('err 1: ' + JSON.stringify(error));
       console.log('res 1: ' + JSON.stringify(response));
-      return processResponse(error, response, body)
+      processResponse(error, response, body)
+        .then((cardId) => resolve(cardId))
+        .catch((err) => reject(err))
     });
   })
 });
