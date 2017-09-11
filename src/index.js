@@ -115,7 +115,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 })
               })
               .catch((err) => {
-                msg.event.message_create.message_data.text = "Sorry there was an error, please try again later."
+                msg.event.message_create.message_data.text = "Sorry there was an error, please try again later..."
                 twitter.sendMessage(msg, function(err, response){
                   if (err !== null){
                     console.log('Error sending message: ' + JSON.stringify(err));
