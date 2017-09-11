@@ -11,6 +11,8 @@ const request = require('request');
  * @param {Object} body Request body object or null
  **/
 const processResponse = (error, response, body) => new Promise ((resolve, reject) =>{
+  console.log('err: ' + JSON.stringify(error));
+  console.log('res: ' + JSON.stringify(response));
   if (!error && response.statusCode === 200){
     resolve(body.cardId)
   } else {
