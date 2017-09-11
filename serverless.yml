@@ -40,10 +40,6 @@ functions:
           path: twitter/webhook
           method: POST # On POST, this lambda talks to the cognicity server to fetch unique cardId, constructs a response and sends the card OTL to the user
           integration: lambda
-    package:
-      - exclude:
-        - src/**
-        - bin/functions/send/**
   twitterReply: # Lambda that gets triggered when a message is published to the SNS topic Twitter
     handler: bin/functions/send/index.twitterReply
     environment:
