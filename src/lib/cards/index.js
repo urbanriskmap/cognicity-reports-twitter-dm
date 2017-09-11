@@ -49,7 +49,7 @@ export default () => ({
     }, function(error, response, body) {
       return processResponse(error, response, body);
     });
-  });
+  })
 });
 
 /*let getCardLink = function(username, network, language, callback) {
