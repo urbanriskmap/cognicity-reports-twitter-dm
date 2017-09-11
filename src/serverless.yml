@@ -20,17 +20,17 @@ functions:
   twitterDMWebhook: # Lambda that gets triggered when user starts a conversation with Twitter Messenger bot
     handler: handler.twitterDMWebhook
     environment:
-      TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
-      TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}
-      TWITTER_APP_CONSUMER_SECRET: ${file(./env.yml):twitter_app_consumer_secret}
-      TWITTER_ACCESS_TOKEN_KEY: ${file(./env.yml):twitter_access_token_key}
-      TWITTER_ACCESS_TOKEN_SECRET: ${file(./env.yml):twitter_access_token_secret}
-      DEFAULT_LANG: ${file(./env.yml):defaultlang}
-      FRONTEND_CARD_PATH: ${file(./env.yml):frontendcardpath}
-      FRONTEND_MAP_PATH: ${file(./env.yml):frontendmappath}
-      SERVER_API_KEY: ${file(./env.yml):serverapikey}
-      SERVER_PATH: ${file(./env.yml):serverpath}
-      SERVER_PORT: ${file(./env.yml):serverport}
+      TWITTER_CONSUMER_KEY: ${file(../env.yml):twitter_consumer_key}
+      TWITTER_CONSUMER_SECRET: ${file(../env.yml):twitter_consumer_secret}
+      TWITTER_APP_CONSUMER_SECRET: ${file(../env.yml):twitter_app_consumer_secret}
+      TWITTER_ACCESS_TOKEN_KEY: ${file(../env.yml):twitter_access_token_key}
+      TWITTER_ACCESS_TOKEN_SECRET: ${file(../env.yml):twitter_access_token_secret}
+      DEFAULT_LANG: ${file(../env.yml):defaultlang}
+      FRONTEND_CARD_PATH: ${file(../env.yml):frontendcardpath}
+      FRONTEND_MAP_PATH: ${file(../env.yml):frontendmappath}
+      SERVER_API_KEY: ${file(../env.yml):serverapikey}
+      SERVER_PATH: ${file(../env.yml):serverpath}
+      SERVER_PORT: ${file(../env.yml):serverport}
     events:
       - http:
           path: twitter/webhook
@@ -43,16 +43,16 @@ functions:
   twitterReply: # Lambda that gets triggered when a message is published to the SNS topic Twitter
     handler: handler.twitterReply
     environment:
-      TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
-      TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}
-      TWITTER_APP_CONSUMER_SECRET: ${file(./env.yml):twitter_app_consumer_secret}
-      TWITTER_ACCESS_TOKEN_KEY: ${file(./env.yml):twitter_access_token_key}
-      TWITTER_ACCESS_TOKEN_SECRET: ${file(./env.yml):twitter_access_token_secret}
-      DEFAULT_LANG: ${file(./env.yml):defaultlang}
-      FRONTEND_CARD_PATH: ${file(./env.yml):frontendcardpath}
-      FRONTEND_MAP_PATH: ${file(./env.yml):frontendmappath}
-      SERVER_API_KEY: ${file(./env.yml):serverapikey}
-      SERVER_PATH: ${file(./env.yml):serverpath}
-      SERVER_PORT: ${file(./env.yml):serverport}
+      TWITTER_CONSUMER_KEY: ${file(../env.yml):twitter_consumer_key}
+      TWITTER_CONSUMER_SECRET: ${file(../env.yml):twitter_consumer_secret}
+      TWITTER_APP_CONSUMER_SECRET: ${file(../env.yml):twitter_app_consumer_secret}
+      TWITTER_ACCESS_TOKEN_KEY: ${file(../env.yml):twitter_access_token_key}
+      TWITTER_ACCESS_TOKEN_SECRET: ${file(../env.yml):twitter_access_token_secret}
+      DEFAULT_LANG: ${file(../env.yml):defaultlang}
+      FRONTEND_CARD_PATH: ${file(../env.yml):frontendcardpath}
+      FRONTEND_MAP_PATH: ${file(../env.yml):frontendmappath}
+      SERVER_API_KEY: ${file(../env.yml):serverapikey}
+      SERVER_PATH: ${file(../env.yml):serverpath}
+      SERVER_PORT: ${file(../env.yml):serverport}
     events:
       - sns: Twitter
