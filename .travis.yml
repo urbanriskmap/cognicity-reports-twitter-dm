@@ -10,5 +10,4 @@ before_install:
 - npm install -g serverless
 install: npm install
 script:
-  - cd src/ 
   - serverless deploy
