@@ -4,7 +4,7 @@ require('dotenv').config();
 
 // Function for sending twitter DMs
 const twitter = require('./lib/twitter/');
-const cards = require('./lib/cards/');
+import cards from './lib/cards/';
 
 //twitterUserId = '905237435394560000' // @riskmapus
 twitterUserId = '905602080252977152' //@riskmapbot
@@ -105,7 +105,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           var re = new RegExp(/\/flood/gi);
           if (re.exec(message_event.message_create.message_data.text) !== null){
             // Call get card link function
-            cards.getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
+            cards().getCardLink(userId.toString(), "twitter", process.env.DEFAULT_LANG, function(err, cardId){
               console.log(cardId)
               if (err === null){
 
