@@ -18,7 +18,7 @@ provider:
 # Add one function for each Lambda
 functions:
   twitterDMWebhook: # Lambda that gets triggered when user starts a conversation with Twitter Messenger bot
-    handler: bin/index.twitterDMWebhook
+    handler: bin/functions/receive/index.twitterDMWebhook
     environment:
       TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
       TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}
@@ -40,8 +40,12 @@ functions:
           path: twitter/webhook
           method: POST # On POST, this lambda talks to the cognicity server to fetch unique cardId, constructs a response and sends the card OTL to the user
           integration: lambda
+    package:
+      - exclude:
+        - src/**
+        - bin/functions/send/**
   twitterReply: # Lambda that gets triggered when a message is published to the SNS topic Twitter
-    handler: bin/index.twitterReply
+    handler: bin/functions/send/index.twitterReply
     environment:
       TWITTER_CONSUMER_KEY: ${file(./env.yml):twitter_consumer_key}
       TWITTER_CONSUMER_SECRET: ${file(./env.yml):twitter_consumer_secret}

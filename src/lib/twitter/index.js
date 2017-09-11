@@ -9,7 +9,6 @@ twitter.oauth = {
   token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 }
 
-
 let sendMessage = function(message, callback){
   // request options
   var request_options = {
