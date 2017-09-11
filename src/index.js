@@ -6,8 +6,7 @@ require('dotenv').config();
 const twitter = require('./lib/twitter/');
 import cards from './lib/cards/';
 
-const twitterUserId = '905237435394560000' // @riskmapus
-//const twitterUserId = '905602080252977152' //@riskmapbot
+const twitterUserId = '905602080252977152' //@riskmapus bot
 
 // GRASP card
 const options = {
