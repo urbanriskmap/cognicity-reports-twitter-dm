@@ -9,4 +9,6 @@ before_install:
   -in env.yml.enc -out env.yml -d
 - npm install -g serverless
 install: npm install
-script: serverless deploy
+script:
+  - cd src/ 
+  - serverless deploy
