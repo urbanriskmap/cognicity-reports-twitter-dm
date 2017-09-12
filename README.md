@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda.svg?branch=master)](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda)
+[![Build Status](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda.svg?branch=master)](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda) [![Coverage Status](https://coveralls.io/repos/github/urbanriskmap/twitter-dm-bot-lamda/badge.svg?branch=dev)](https://coveralls.io/github/urbanriskmap/twitter-dm-bot-lamda?branch=dev)
 
 Twitter DM Bot for CogniCity
 
