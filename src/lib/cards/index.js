@@ -4,25 +4,29 @@ import request from 'request'
 
 // response
 
-/**
- * Process response from card server made using request library
- * @function processResponse
- * @param {Object} error Request error object or null
- * @param {Object} response Request response object or null
- * @param {Object} body Request body object or null
- **/
-const processResponse = (error, response, body) => new Promise ((resolve, reject) =>{
-  if (!error && response.statusCode === 200){
-    resolve(body.cardId)
-  } else {
-    reject('Error getting card: ' + JSON.stringify(error))
-  }
-});
+
 
 /*
  * Cards object for external functions
  */
 export default () => ({
+  /**
+   * Process response from card server made using request library
+   * @function _processResponse
+   * @param {Object} error Request error object or null
+   * @param {Object} response Request response object or null
+   * @param {Object} body Request body object or null
+   **/
+  _processResponse: (error, response, body) => new Promise ((resolve, reject) =>{
+    if (!error && response && response.statusCode === 200 && body && body.cardId){
+      resolve(body.cardId)
+    } else if (error) {
+      reject(new Error(error))
+    } else {
+      reject(new Error('No response or incorrect body object received from server'))
+    }
+  }),
+
   /**
   * Request a card link from server using request library
   * @function getCardLink
@@ -49,7 +53,7 @@ export default () => ({
       body: cardRequest
     }, function(error, response, body) {
       // Process response
-      processResponse(error, response, body)
+      _processResponse(error, response, body)
         .then((cardId) => resolve(cardId))
         .catch((err) => reject(err))
     });
