@@ -1,10 +1,4 @@
-// Get Flood Card from CogniCity server
-//const request = require('request');
 import request from 'request'
-
-// response
-
-
 
 /*
  * Cards object for external functions

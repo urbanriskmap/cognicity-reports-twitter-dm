@@ -4,7 +4,8 @@
   "description": "Twitter DM bot runnning on AWS lambda",
   "main": "index.js",
   "scripts": {
-    "mocha": "mocha --compilers js:babel-core/register src/test/",
+    "lint": "eslint src",
+    "mocha": "mocha --compilers js:babel-core/register src/test/index",
     "test": "npm run mocha"
   },
   "keywords": [
@@ -21,6 +22,8 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "eslint": "^4.6.1",
+    "eslint-config-google": "^0.9.1",
     "mocha": "^3.5.3",
     "nyc": "^11.2.1",
     "supertest": "^3.0.0",
