@@ -10,5 +10,5 @@ before_install:
 - npm install -g serverless
 install: npm install
 script:
-  - ./node_modules/.bin/babel src -d bin
+  - npm build
   - serverless deploy

@@ -44,7 +44,7 @@ export default () => ({
    **/
   sendMessage: (body) => new Promise ((resolve, reject) => {
     // Send the message
-    request.post(_prepareRequest(message), function(error, response, body){
+    request.post(_prepareRequest(body), function(error, response, body){
       if (!error){
         resolve(response)
       } else {
