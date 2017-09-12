@@ -10,5 +10,5 @@ before_install:
 - npm install -g serverless
 install: npm install
 script:
-  - npm build
+  - npm run build
   - serverless deploy
