@@ -1,4 +1,5 @@
-Twitter DM Bot for CogniCity (prototype)
+[![Build Status](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda.svg?branch=master)](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda) 
+Twitter DM Bot for CogniCity
 
 - reference: https://github.com/twitterdev/twitter-webhook-boilerplate-node/blob/master/example_scripts/welcome_messages/create-welcome-message.js
 

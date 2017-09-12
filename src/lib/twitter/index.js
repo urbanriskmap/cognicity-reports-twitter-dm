@@ -24,7 +24,7 @@ export default () => ({
   _prepareRequest: (body) => {
     let requestOptions = {
       url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-      oauth: options.oauth,
+      oauth: config.oauth,
       json: true,
       headers: {
         'content-type': 'application/json'
