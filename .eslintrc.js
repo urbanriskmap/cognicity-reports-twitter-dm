@@ -13,6 +13,7 @@ module.exports = {
       },
     "rules":
       {
-        "no-multi-str": "off" // not a problem in node apps
+        "no-multi-str": "off", // not a problem in node apps
+        "no-console": "off" // Lambda requires console ouput for logging
       }
 };
