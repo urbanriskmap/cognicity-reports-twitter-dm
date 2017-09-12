@@ -14,43 +14,44 @@ const config = {
   }
 }
 
-export default () => ({
-  /**
-    * Prepares Twitter message request object
-    * @function _prepareRequest
-    * @param {Object} body - message body object
-    * @return {Object} Twitter message request object
-    */
-  _prepareRequest: (body) => {
-    let requestOptions = {
-      url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-      oauth: config.oauth,
-      json: true,
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: body
+
+/**
+  * Prepares Twitter message request object
+  * @function _prepareRequest
+  * @param {Object} body - message body object
+  * @return {Object} Twitter message request object
+  */
+const _prepareRequest = function(body){
+  let requestOptions = {
+    url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
+    oauth: config.oauth,
+    json: true,
+    headers: {
+      'content-type': 'application/json'
+    },
+    body: body
+  }
+  // Log the message
+  console.log('Outgoing DMessage object: ' + JSON.stringify(body));
+
+  return requestOptions;
+}
+
+/**
+ * Send direct Twitter message
+ * @function sendMessage
+ * @param {Object} body - Twitter direct message body object
+ **/
+const sendMessage = (body) => new Promise ((resolve, reject) => {
+  let opts = _prepareRequest(body);
+  // Send the message
+  request.post(opts, function(error, response, body){
+    if (!error){
+      resolve(response)
+    } else {
+      console.log(response);
+      reject(error)
     }
-    // Log the message
-    console.log('Outgoing DMessage object: ' + JSON.stringify(body));
-
-    return requestOptions;
-  },
-
-  /**
-   * Send direct Twitter message
-   * @function sendMessage
-   * @param {Object} body - Twitter direct message body object
-   **/
-  sendMessage: (body) => new Promise ((resolve, reject) => {
-    // Send the message
-    request.post(_prepareRequest(body), function(error, response, body){
-      if (!error){
-        resolve(response)
-      } else {
-        console.log(response);
-        reject(error)
-      }
-    })
   })
 });
+export default () => ({_prepareRequest, sendMessage})
