@@ -15,8 +15,6 @@ before_install:
 install: npm install
 
 script:
-  - npm run test
+  - npm run test && npm run coverage
   - npm run build
   - serverless deploy
-
-after_success: npm run coverage
