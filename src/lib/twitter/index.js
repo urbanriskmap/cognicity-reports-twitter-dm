@@ -48,6 +48,7 @@ export default () => ({
       if (!error){
         resolve(response)
       } else {
+        console.log(response);
         reject(error)
       }
     })
