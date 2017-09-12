@@ -123,21 +123,21 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 msg.event.message_create.message_data.text = "Please report using this one-time link https://cards.riskmap.us/flood/" + cardId
                 console.log('Prepared message: ' + JSON.stringify(msg))
                 // Send message to user
-                twitter.sendMessage(msg)
+                twitter().sendMessage(msg)
                   .then(response => console.log('Message sent.'))
                   .catch(err => console.log('Error sending message, response from Twitter was: ' + JSON.stringify(err)));
               })
               .catch((err) => {
                 msg.event.message_create.message_data.text = "Sorry there was an error, please try again later..."
                 // Send message to user
-                twitter.sendMessage(msg)
+                twitter().sendMessage(msg)
                   .then(response => console.log('Message sent.'))
                   .catch(err => console.log('Error sending message, response from Twitter was: ' + JSON.stringify(err)));
                 console.log("Error getting card link: " + JSON.stringify(err));
               })
           } else {
             // Send default message
-            twitter.sendMessage(msg)
+            twitter().sendMessage(msg)
               .then(response => console.info('Message sent.'))
               .catch(err => console.error('Error sending message, response from Twitter was: ' + JSON.stringify(err)));
             }

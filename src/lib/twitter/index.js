@@ -5,7 +5,7 @@ import request from 'request';
  */
 
 // Global Twitter credentials object
-const twitter = {
+const config = {
   oauth: {
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -24,7 +24,7 @@ export default () => ({
   _prepareRequest: (body) => {
     let requestOptions = {
       url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
-      oauth: twitter.oauth,
+      oauth: options.oauth,
       json: true,
       headers: {
         'content-type': 'application/json'

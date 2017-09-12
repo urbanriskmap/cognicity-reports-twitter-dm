@@ -3,3 +3,4 @@ env.yml
 .serverless
 .DS_Store
 bin/
+.nyc_output/
