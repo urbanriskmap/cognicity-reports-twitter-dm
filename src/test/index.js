@@ -9,6 +9,8 @@
 // Unit tests
 import testCards from './testLibCards.js';
 import testTwitter from './testLibTwitter.js';
+import testReceiveGet from './testReceiveGet.js';
 
 testCards();
 testTwitter();
+testReceiveGet();

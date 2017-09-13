@@ -3,34 +3,22 @@ require('dotenv').config();
 // Function for sending twitter DMs
 import twitter from '../../lib/twitter/';
 import cards from '../../lib/cards/';
+import get from './get';
 
-const twitterUserId = '905602080252977152'; // @riskmapus bot
+// const twitterUserId = '905602080252977152'; // @riskmapus bot
 
-// GRASP operating regions
-// const instanceRegions = {
-//  brw: 'broward',
-// };
-
-// Replies to user
-// const replies = {
-//  'en': 'Hi! Report using this link, thanks.',
-// };
-
-/*
- * Construct the initial message to be sent to the user
- */
-// function getInitialMessageText(language, cardId, disasterType) {
-//  return replies[language] + '\n' + process.env.FRONTEND_CARD_PATH + '/'
-//    + disasterType + '/' + cardId;
-// }
-
-/*
- * Construct the confirmation message to be sent to the user
- */
-// function getConfirmationMessageText(language, implementationArea, reportId) {
-//  return confirmations[language] + '\n' + process.env.FRONTEND_MAP_PATH + '/'
-//  + instanceRegions[implementationArea] + '/' + reportId;
-// }
+const config = {
+  oauth: {
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  },
+  app: {
+    consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
+    twitter_user_id: '905602080252977152', // @riskmapus bot
+  },
+};
 
 /**
  * Webhook handler for incoming Twitter DMs
@@ -41,41 +29,16 @@ const twitterUserId = '905602080252977152'; // @riskmapus bot
  */
 module.exports.twitterDMWebhook = (event, context, callback) => {
   if (event.method === 'GET') {
-    let crcToken = event.query['crc_token'];
-
-    if (crcToken) {
-      /* let hash = crypto.createHmac('sha256',
-      process.env.TWITTER_APP_CONSUMER_SECRET)
-        .update(crcToken)
-        .digest('base64');
-
-      let hashstring = 'sha256=' + hash;
-
-      let response = JSON.parse('{"response_token": "'+hashstring+'"}'); */
-      twitter().crcResponse(crcToken)
+      get(config, event)
         .then((response) => callback(null, response));
-    } else {
-      const response = {
-        statusCode: 400,
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS
-          'Access-Control-Allow-Credentials': true,
-        },
-        body: JSON.stringify({'message':
-          `Error: crc_token missing from request.`}),
-      };
-      callback(null, response);
-    }
-  }
-  // POST is incoming event
-  if (event.method === 'POST') {
+  } else if (event.method === 'POST') {
     // Check for messages
     if (event.body.direct_message_events) {
       console.log('Number of messages in this event:'
         + event.body.direct_message_events.length);
       event.body.direct_message_events.forEach(function(messageEvent) {
         if (messageEvent.type == 'message_create' &&
-            messageEvent.message_create.sender_id !== twitterUserId) {
+        messageEvent.message_create.sender_id !== config.app.twitter_user_id) {
           // Get user id for reply
           let userId = messageEvent.message_create.sender_id;
 
@@ -111,7 +74,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 + cardId;
                 console.log('Prepared message: ' + JSON.stringify(msg));
                 // Send message to user
-                twitter().sendMessage(msg)
+                twitter(config).sendMessage(msg)
                   .then((response) => console.log('Message sent.'))
                   .catch((err) => console.log(`Error sending message, ` +
                     `response from Twitter was: ` + JSON.stringify(err)));
@@ -120,7 +83,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                 msg.event.message_create.message_data.text = `Sorry there was `
                 + `an error, please try again later...`;
                 // Send message to user
-                twitter().sendMessage(msg)
+                twitter(config).sendMessage(msg)
                   .then((response) => console.log('Message sent.'))
                   .catch((err) => console.log(`Error sending message, response `
                     + `from Twitter was: ` + JSON.stringify(err)));
@@ -128,7 +91,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
               });
           } else {
             // Send default message
-            twitter().sendMessage(msg)
+            twitter(config).sendMessage(msg)
               .then((response) => console.info('Message sent.'))
               .catch((err) => console.error(`Error sending message, response `
               + `from Twitter was: ` + JSON.stringify(err)));
