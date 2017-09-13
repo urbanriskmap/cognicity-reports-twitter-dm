@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 require('dotenv').config();
 
 // Function for sending twitter DMs
@@ -45,16 +44,16 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     let crcToken = event.query['crc_token'];
 
     if (crcToken) {
-      let hash = crypto.createHmac('sha256',
+      /* let hash = crypto.createHmac('sha256',
       process.env.TWITTER_APP_CONSUMER_SECRET)
         .update(crcToken)
         .digest('base64');
 
       let hashstring = 'sha256=' + hash;
 
-      let response = JSON.parse('{"response_token": "'+hashstring+'"}');
-
-      callback(null, response);
+      let response = JSON.parse('{"response_token": "'+hashstring+'"}'); */
+      twitter().crcResponse(crcToken)
+        .then((response) => callback(null, response));
     } else {
       const response = {
         statusCode: 400,

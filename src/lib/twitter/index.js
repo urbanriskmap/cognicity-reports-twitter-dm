@@ -1,4 +1,5 @@
 import request from 'request';
+import crypto from 'crypto';
 
 /*
  * Twitter object for direct message interactions
@@ -11,6 +12,9 @@ const config = {
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     token: process.env.TWITTER_ACCESS_TOKEN_KEY,
     token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  },
+  app: {
+    consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
   },
 };
 
@@ -36,6 +40,16 @@ const _prepareRequest = function(body) {
   return requestOptions;
 };
 
+const crcResponse = (token) => new Promise((resolve, reject) => {
+  let hash = crypto.createHmac('sha256',
+  config.app.consumer_secret)
+    .update(token)
+    .digest('base64');
+  let hashstring = 'sha256=' + hash;
+  let response = JSON.parse('{"response_token": "'+hashstring+'"}');
+  resolve(response);
+});
+
 /**
  * Send direct Twitter message
  * @function sendMessage
@@ -54,4 +68,4 @@ const sendMessage = (body) => new Promise((resolve, reject) => {
     }
   });
 });
-export default () => ({_prepareRequest, sendMessage});
+export default () => ({_prepareRequest, crcResponse, sendMessage});
