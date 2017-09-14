@@ -3,8 +3,9 @@ import * as test from 'unit.js';
 import cards from '../lib/cards/';
 /**
  * Twitter library function testing harness
+ * @param {Object} config - configuration object
  **/
-export default function() {
+export default function(config) {
   describe('lib/cards Testing', function() {
     it('Process a succesful card response', function(done) {
       cards()._processResponse(null, {statusCode: 200}, {cardId: 3142})

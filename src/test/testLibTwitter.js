@@ -3,22 +3,9 @@ import * as test from 'unit.js';
 import twitter from '../lib/twitter/';
 /**
  * Twitter library function testing harness
+ * @param {Object} config - configuration object
  **/
- const config = {
-   oauth: {
-     consumer_key: process.env.TWITTER_CONSUMER_KEY,
-     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-     token: process.env.TWITTER_ACCESS_TOKEN_KEY,
-     token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-   },
-   app: {
-     consumer_secret: 'abc',
-   },
- };
- /**
-  * lib/twitter testing function
- **/
-export default function() {
+export default function(config) {
   /**
    * lib/twitter testing harness
   **/

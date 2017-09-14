@@ -1,17 +1,5 @@
 import * as test from 'unit.js';
 
-const config = {
-  oauth: {
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-  },
-  app: {
-    consumer_secret: 'abc',
-  },
-};
-
 const event = {
   query: {
     crc_token: '1',
@@ -21,8 +9,9 @@ const event = {
 import get from '../functions/receive/get';
 /**
  * Twitter library function testing harness
+ * @param {Object} config - configuration object
  **/
-export default function() {
+export default function(config) {
   describe('receive/get Testing', function() {
     it('Process a succesful card response', function(done) {
       get(config, event)

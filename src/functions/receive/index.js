@@ -2,6 +2,7 @@ require('dotenv').config();
 
 // Function for sending twitter DMs
 import twitter from '../../lib/twitter/';
+import messages from '../../lib/twitter/messages';
 import cards from '../../lib/cards/';
 import get from './get';
 
@@ -16,7 +17,11 @@ const config = {
   },
   app: {
     consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
-    twitter_user_id: '905602080252977152', // @riskmapus bot
+    twitter_user_id: '905602080252977152', // @riskmapus bot,
+    default_lang: process.env.DEFAULT_LANG,
+  },
+  server: {
+    card_endpoint: `https://cards.riskmap.us/flood/`,
   },
 };
 
@@ -43,22 +48,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
           let userId = messageEvent.message_create.sender_id;
 
           // Prepare message
-          let msg = {};
-          msg.event = {
-                type: 'message_create',
-                message_create: {
-                  target: {
-                    recipient_id: undefined,
-                  },
-                  message_data: {
-                    text: `RiskMap bot helps you report flooding in realtime. `
-                    + `Send /flood to report. In life-threatening situations `
-                    + `always call 911.`,
-                  },
-                },
-              };
-          // Set recipient
-          msg.event.message_create.target.recipient_id = userId;
+          let msg = messages.default('en', userId);
 
           console.log('message text: '
             + messageEvent.message_create.message_data.text);

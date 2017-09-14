@@ -7,10 +7,29 @@
  */
 
 // Unit tests
-import testCards from './testLibCards.js';
-import testTwitter from './testLibTwitter.js';
-import testReceiveGet from './testReceiveGet.js';
+import testCards from './testLibCards';
+import testTwitter from './testLibTwitter';
+import testReceiveGet from './testReceiveGet';
+import testMessages from './testMessages';
 
-testCards();
-testTwitter();
-testReceiveGet();
+const config = {
+  oauth: {
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  },
+  app: {
+    consumer_secret: 'abc',
+    twitter_user_id: '905602080252977152', // @riskmapus bot,
+    default_lang: 'en',
+  },
+  server: {
+    card_endpoint: `https://cards.riskmap.us/flood/`,
+  },
+};
+
+testCards(config);
+testTwitter(config);
+testReceiveGet(config);
+testMessages(config);
