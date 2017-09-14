@@ -25,7 +25,19 @@ export default (config) => ({
     response.event.message_create.target.recipient_id = userId;
     return response;
   },
-  confirm: function(lang, userId, reportId) {
+  confirm: function(lang, userId, cardId) {
+    // TODO multi lang support
+    let response = messages[config.app.default_lang];
+    if (lang in messages) {
+      response = messages[lang];
+    }
+    response.event.message_create.target.recipient_id = userId;
+    response.event.message_create.message_data.text =
+      `Please report using this one-time link ` + config.server.card_endpoint
+      + cardId;
+    return response;
+  },
+  thanks: function(lang, userId, reportId) {
     // TODO multi lang support
     let response = messages[config.app.default_lang];
     if (lang in messages) {

@@ -36,9 +36,17 @@ export default function(config) {
     });
     it('Get the confirmation response with report id', function(done) {
       let msg = messages(config).confirm('en', '123', '1');
-      test.value(msg.event.message_create.message_data.text).is(`Thank you `
-        + `for your report. You can access it using this link ` +
-        `https://riskmap.us/map/broward/1`);
+      test.value(msg.event.message_create.message_data.text)
+        .is(`Please report using this one-time link `
+          + `https://cards.riskmap.us/flood/1`);
+      test.value(msg.event.message_create.target.recipient_id).is(`123`);
+      done();
+    });
+    it('Get the thanks message with report id', function(done) {
+      let msg = messages(config).thanks('en', '123', '1');
+      test.value(msg.event.message_create.message_data.text)
+        .is(`Thank you for your report. You can access it using this link `
+          + `https://riskmap.us/map/broward/1`);
       test.value(msg.event.message_create.target.recipient_id).is(`123`);
       done();
     });

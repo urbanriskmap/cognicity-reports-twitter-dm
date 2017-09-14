@@ -4,9 +4,6 @@ require('dotenv').config();
 import twitter from '../../lib/twitter/';
 import messages from '../../lib/twitter/messages';
 import cards from '../../lib/cards/';
-import get from './get';
-
-// const twitterUserId = '905602080252977152'; // @riskmapus bot
 
 const config = {
   oauth: {
@@ -19,9 +16,12 @@ const config = {
     consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
     twitter_user_id: '905602080252977152', // @riskmapus bot,
     default_lang: process.env.DEFAULT_LANG,
+    twitter_endpoint: `https://api.twitter.com/1.1/direct_messages/events/new.json`,
   },
   server: {
     card_endpoint: `https://cards.riskmap.us/flood/`,
+    card_api: `https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards`,
+    api_key: process.env.SERVER_API_KEY,
   },
 };
 
@@ -34,35 +34,39 @@ const config = {
  */
 module.exports.twitterDMWebhook = (event, context, callback) => {
   if (event.method === 'GET') {
-      get(config, event)
-        .then((response) => callback(null, response));
+    let crcToken = event.query['crc_token'];
+    if (crcToken) {
+      twitter(config).crcResponse(crcToken)
+        .then((response) => callback(response));
+    } else {
+      const response = {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*', // Required for CORS
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify({'message':
+          `Error: crc_token missing from request.`}),
+      };
+      callback(null, response);
+    }
   } else if (event.method === 'POST') {
     // Check for messages
     if (event.body.direct_message_events) {
-      console.log('Number of messages in this event:'
-        + event.body.direct_message_events.length);
       event.body.direct_message_events.forEach(function(messageEvent) {
         if (messageEvent.type == 'message_create' &&
         messageEvent.message_create.sender_id !== config.app.twitter_user_id) {
           // Get user id for reply
           let userId = messageEvent.message_create.sender_id;
 
-          // Prepare message
-          let msg = messages.default('en', userId);
-
-          console.log('message text: '
-            + messageEvent.message_create.message_data.text);
-          // check for #flood
+          // check for /flood
           let re = new RegExp(/\/flood/gi);
           if (re.exec(messageEvent.message_create.message_data.text) !== null) {
             // Call get card link function
-            cards().getCardLink(userId.toString(), 'twitter',
+            cards(config).getCardLink(userId.toString(), 'twitter',
             process.env.DEFAULT_LANG)
               .then((cardId) => {
-                msg.event.message_create.message_data.text = `Please report `
-                + `using this one-time link https://cards.riskmap.us/flood/`
-                + cardId;
-                console.log('Prepared message: ' + JSON.stringify(msg));
+                let msg = messages.confirm('en', userId, cardId);
                 // Send message to user
                 twitter(config).sendMessage(msg)
                   .then((response) => console.log('Message sent.'))
@@ -70,19 +74,15 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
                     `response from Twitter was: ` + JSON.stringify(err)));
               })
               .catch((err) => {
-                msg.event.message_create.message_data.text = `Sorry there was `
-                + `an error, please try again later...`;
-                // Send message to user
-                twitter(config).sendMessage(msg)
-                  .then((response) => console.log('Message sent.'))
-                  .catch((err) => console.log(`Error sending message, response `
-                    + `from Twitter was: ` + JSON.stringify(err)));
-                console.log('Error getting card link: ' + JSON.stringify(err));
+                console.log('Error sending message to twitter: ' + err);
+                // TODO - msg.error
+              // msg.event.message_create.message_data.text = `Sorry there was `
+                // + `an error, please try again later...`;
               });
           } else {
             // Send default message
+            let msg = messages.default('en', userId);
             twitter(config).sendMessage(msg)
-              .then((response) => console.info('Message sent.'))
               .catch((err) => console.error(`Error sending message, response `
               + `from Twitter was: ` + JSON.stringify(err)));
             }

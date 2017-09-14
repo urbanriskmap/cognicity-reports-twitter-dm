@@ -16,7 +16,7 @@ export default function(config) {
   **/
   methods._prepareRequest = function(body) {
     let requestOptions = {
-      url: 'https://api.twitter.com/1.1/direct_messages/events/new.json',
+      url: config.app.twitter_endpoint,
       oauth: config.oauth,
       json: true,
       headers: {

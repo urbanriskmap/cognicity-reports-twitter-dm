@@ -9,7 +9,6 @@
 // Unit tests
 import testCards from './testLibCards';
 import testTwitter from './testLibTwitter';
-import testReceiveGet from './testReceiveGet';
 import testMessages from './testMessages';
 
 const config = {
@@ -23,13 +22,16 @@ const config = {
     consumer_secret: 'abc',
     twitter_user_id: '905602080252977152', // @riskmapus bot,
     default_lang: 'en',
+    twitter_endpoint: `http://127.0.0.1/`,
   },
   server: {
     card_endpoint: `https://cards.riskmap.us/flood/`,
+    card_api:
+      `http://127.0.0.1/`,
+    api_key: process.env.SERVER_API_KEY,
   },
 };
 
 testCards(config);
 testTwitter(config);
-testReceiveGet(config);
 testMessages(config);
