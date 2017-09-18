@@ -19,6 +19,6 @@ script:
 
 after_success:
   if [ $TRAVIS_BRANCH == 'master' ]; then
-    npm run build
-    serverless deploy
+    - npm run build
+    - serverless deploy
   fi
