@@ -24,7 +24,7 @@ import request from 'request';
      } else if (error) {
        reject(error);
      } else {
-       reject(new Error(`No response or incorrect body received from server`));
+       reject(new Error(`No response or incorrect body received from server: ` + JSON.stringify(response)));
      }
    });
    /**
