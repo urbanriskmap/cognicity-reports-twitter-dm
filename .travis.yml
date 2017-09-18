@@ -1,12 +1,24 @@
 language: node_js
+
 node_js: '6.10'
+
 env:
   global:
   - secure: qhwkTnGXDrlfrYq8ksrihQT5bTsGXZ9XpihKRlLf7uSWhDohXEZZXuQvQRSH2mRnUAmmYx/h+jSEWZeEoQNC+NL4wlIcTTZGWFeJWDtLQbDKDIsnlvCYGdr6a78CfVkJZC0Lu6NmlOrMRWr5Pvsr6ZBf9LO3vnCFl6/mgdhRHZIl7041ytZ/iVJL5edXNS4BYLCZU4/a7s+xAp+nz3yGYpVxkLcWji0FlfEblsqYZrxVj6QG3fBmI3yoxjsgThbPZxGs/FjViGP+NXOnjJx14bb7BasWBH5+IOnMiD34oebITTznvwsohkmsZ7j/nyfXnepTxnu7T28wJiYK5cEtyWy464ekt26r2in1aygESJg1vdFfluyCPkfMPwTbphQTL5i3Rv7gtvwlRR9uS0xYDwOkQ+mDIRxXMK0eS2zwaozHVe3sJGC017xf6yp9nbyGQmEza5jE8O4lDGE4I381IeZ3EfL49oWTeHQBTo5bG+VB1OeM4YBOYyt0SG4zJGo0eXjsUiccG9j4j5ruAEZVM/12mVU0ZPRuYsEJs8Yq/sOcUiceUSBPGEegXPxHNBiwU2XF6OQ2bmsKka1DDNmzhiQF4X0L68IB/flkw6peoE6KKMbFS9TL/8xrp+gByeIjqO34bkD2iOHD9Ba9UBx5hWNL2dLE47/BT6orCFqPjvg=
   - secure: jq0NhqdTexKmpTSC24Tpgmg2SUkxPulni90IDJ67YO8caY3SASWn6+18GZSPcvjVAbNxUAiTK5lL619gF4BjRa24nsjDOv5zKaS0BT2gGgmJGrVOrOJlIH6XO22hjJHpXr3G1Wnj9G38Pr7i7h/vzVfdagmQl+qFeaMhoATHhfwZr01rxtMJm3AE3ic6QBqEUSwFBE5hE7AoGbCBjZxfzUWWJlHHEBTQN4ZKdzozJcohF3Eie9uiLjO4GdcB7IQ+RXt912szZVauSpJc2D9orMIUUIk5cYSpTSpwvm8ZVa2KO0rPiWepG3sZXTUFpm1fwTA16sNn2KlHXDz/+3gsDW9aabU9pUX88v19oqVLEx48AoUYXJCuef0Vv/ieh8MUWvdXUTvG1mA6OC7N4wmAjaZe0y7WLjCbX8hn/C5uxaC+T3iLuHbcERs86HFwXL6i2h1NzZw4C6nMrKhe2bfUIf7AD5SYJ/NC5FVOQvbhU9LidvThqedewy3boPkmfoMvO7nXhTaHn06sphXOjbX0fYcRjPNpMdEazhw4GdlPHkat0/Q1oGyJh98hasBi24exq5xiUM/fd4udgLkRhubHlTuGbNDP3NehP+qxRAD045LdD/p6Pp4xu/+U9Jllm6L9eMiCvhNMRqBeuyv9WXZ8HR9GJ92TDLOwiTOdkgy8m24=
+
 before_install:
 - openssl aes-256-cbc -K $encrypted_7ac30f33e643_key -iv $encrypted_7ac30f33e643_iv
   -in env.yml.enc -out env.yml -d
 - npm install -g serverless
+
 install: npm install
-script: serverless deploy
+
+script:
+  - npm run test && npm run coverage
+
+after_success:
+  if [ $TRAVIS_BRANCH == 'master' ]; then
+    npm run build
+    serverless deploy
+  fi

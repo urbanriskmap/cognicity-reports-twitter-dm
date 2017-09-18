@@ -1,0 +1,9 @@
+{
+  "sourceMap": false,
+  "instrument": false,
+  "exclude": [
+    "**/test/**",
+    "bin",
+    "node_modules"
+  ]
+}
