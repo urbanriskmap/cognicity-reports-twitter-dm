@@ -1,10 +1,14 @@
 {
-  "name": "twitter-bwot",
+  "name": "cognicity-twitter-dm-lambda",
   "version": "0.0.1",
   "description": "Twitter DM bot runnning on AWS lambda",
-  "main": "handler.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint src",
+    "mocha": "nyc mocha --compilers js:babel-core/register src/test/index",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "npm run lint && npm run mocha",
+    "build": "./node_modules/.bin/babel src -d bin"
   },
   "keywords": [
     "bot",
@@ -16,5 +20,16 @@
     "dotenv": "^4.0.0",
     "request": "^2.81.0",
     "twitter": "^1.7.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^4.1.4",
+    "babel-preset-es2015": "^6.24.1",
+    "coveralls": "^2.13.1",
+    "eslint": "^4.6.1",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^3.5.3",
+    "nyc": "^11.2.1",
+    "unit.js": "^2.0.0"
   }
 }
