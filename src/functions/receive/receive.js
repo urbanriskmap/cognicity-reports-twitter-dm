@@ -45,7 +45,7 @@ export default function(config) {
     * @return {Object} - Promise that message issued
   **/
   methods._sendCard = (userId) => new Promise((resolve, reject) => {
-    cards(config).getCardLink(userId.toString(), 'network',
+    cards(config).getCardLink(userId.toString(), 'twitter',
       config.app.default_lang)
       .then((cardId) => {
           // Send message with card link
