@@ -10,6 +10,7 @@
 import testCards from './testLibCards';
 import testTwitter from './testLibTwitter';
 import testMessages from './testMessages';
+import testReceive from './testReceive';
 
 const config = {
   oauth: {
@@ -35,3 +36,4 @@ const config = {
 testCards(config);
 testTwitter(config);
 testMessages(config);
+testReceive(config);

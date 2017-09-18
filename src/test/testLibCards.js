@@ -20,7 +20,7 @@ export default function(config) {
       cards(config)._processResponse('error from server', {statusCode: 200},
       {cardId: 3142})
         .catch((err) => {
-          test.value(err.message).is('error from server');
+          test.value(err).is('error from server');
           done();
         });
     }),
@@ -52,7 +52,7 @@ export default function(config) {
       cards(config).getCardLink('user', 'twitter', 'en')
         .catch((err) => {
           test.value(err.message)
-            .is('Error: connect ECONNREFUSED 127.0.0.1:80');
+            .is('connect ECONNREFUSED 127.0.0.1:80');
           done();
         });
     });

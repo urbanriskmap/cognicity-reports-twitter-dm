@@ -27,3 +27,8 @@ Process is convoluted.
 1.) Register a new separate app against the account which will reply (e.g. @riskmapus)
 2.) Paste the account ID into the lambda to avoid self spam
 3.) Paste keys into VARIABLES for replies
+
+### Design Patterns
+- functions that make external calls should return a promise
+- internal methods can be simple functions
+- functionality should be testable without excessive mocking

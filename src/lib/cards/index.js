@@ -22,7 +22,7 @@ import request from 'request';
           && body && body.cardId) {
        resolve(body.cardId);
      } else if (error) {
-       reject(new Error(error));
+       reject(error);
      } else {
        reject(new Error(`No response or incorrect body received from server`));
      }
@@ -57,7 +57,9 @@ import request from 'request';
        // Process response
        methods._processResponse(error, response, body)
          .then((cardId) => resolve(cardId))
-         .catch((err) => reject(err));
+         .catch((err) => {
+           reject(err);
+         });
      });
    });
    return methods;

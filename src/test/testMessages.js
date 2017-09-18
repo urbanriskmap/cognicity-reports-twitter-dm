@@ -25,7 +25,7 @@ let expectedMsg = {
 export default function(config) {
   describe('lib/twitter Message testing', function() {
     it('Get the default response', function(done) {
-      let msg = messages(config).default('en', '123');
+      let msg = messages(config).default('in', '123');
       test.value(msg).is(expectedMsg);
       done();
     });
@@ -35,7 +35,7 @@ export default function(config) {
       done();
     });
     it('Get the confirmation response with report id', function(done) {
-      let msg = messages(config).confirm('en', '123', '1');
+      let msg = messages(config).card('en', '123', '1');
       test.value(msg.event.message_create.message_data.text)
         .is(`Please report using this one-time link `
           + `https://cards.riskmap.us/flood/1`);

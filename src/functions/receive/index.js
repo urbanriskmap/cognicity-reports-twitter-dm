@@ -2,8 +2,7 @@ require('dotenv').config();
 
 // Function for sending twitter DMs
 import twitter from '../../lib/twitter/';
-import messages from '../../lib/twitter/messages';
-import cards from '../../lib/cards/';
+import receive from './receive';
 
 const config = {
   oauth: {
@@ -51,44 +50,11 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       callback(null, response);
     }
   } else if (event.method === 'POST') {
-    // Check for messages
-    if (event.body.direct_message_events) {
-      event.body.direct_message_events.forEach(function(messageEvent) {
-        if (messageEvent.type == 'message_create' &&
-        messageEvent.message_create.sender_id !== config.app.twitter_user_id) {
-          // Get user id for reply
-          let userId = messageEvent.message_create.sender_id;
-
-          // check for /flood
-          let re = new RegExp(/\/flood/gi);
-          if (re.exec(messageEvent.message_create.message_data.text) !== null) {
-            // Call get card link function
-            cards(config).getCardLink(userId.toString(), 'twitter',
-            process.env.DEFAULT_LANG)
-              .then((cardId) => {
-                let msg = messages.confirm('en', userId, cardId);
-                // Send message to user
-                twitter(config).sendMessage(msg)
-                  .then((response) => console.log('Message sent.'))
-                  .catch((err) => console.log(`Error sending message, ` +
-                    `response from Twitter was: ` + JSON.stringify(err)));
-              })
-              .catch((err) => {
-                console.log('Error sending message to twitter: ' + err);
-                // TODO - msg.error
-              // msg.event.message_create.message_data.text = `Sorry there was `
-                // + `an error, please try again later...`;
-              });
-          } else {
-            // Send default message
-            let msg = messages.default('en', userId);
-            twitter(config).sendMessage(msg)
-              .catch((err) => console.error(`Error sending message, response `
-              + `from Twitter was: ` + JSON.stringify(err)));
-            }
-          }
+      receive(config).process(event)
+        .then(callback(null))
+        .catch((err) => {
+          console.error(err);
+          callback(null);
         });
-      }
-    callback();
     }
   };

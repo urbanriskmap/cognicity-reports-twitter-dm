@@ -1,6 +1,5 @@
 import request from 'request';
 import crypto from 'crypto';
-
 /**
  * Twitter object for direct message interactions
  * @param {Object} config - twitter parameters
@@ -57,7 +56,6 @@ export default function(config) {
       if (!error) {
         resolve(response);
       } else {
-        console.log(response);
         reject(error);
       }
     });

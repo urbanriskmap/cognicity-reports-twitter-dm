@@ -1,23 +1,20 @@
 // Prepare message
-let messages = {en: {
-  event: {
-      type: 'message_create',
-      message_create: {
-        target: {
-          recipient_id: undefined,
-        },
-        message_data: {
-          text: `RiskMap bot helps you report flooding in realtime. `
-          + `Send /flood to report. In life-threatening situations `
-          + `always call 911.`,
-        },
-      },
-    },
-  },
-};
+const texts = '{"in":'
++ '{"event":{"type":"message_create","message_create":'
++ '{"target":{},'
++ '"message_data":{"text":"RiskMap bot helps you report flooding in realtime. '
++ 'Send /flood to report. '
++ 'In life-threatening situations always call 911."}}}},'
++ '"en":'
++ '{"event":{"type":"message_create","message_create":'
++ '{"target":{},'
++ '"message_data":{"text":"RiskMap bot helps you report flooding in realtime. '
++ 'Send /flood to report. '
++ 'In life-threatening situations always call 911."}}}}}';
 
 export default (config) => ({
   default: function(lang, userId) {
+    let messages = JSON.parse(texts);
     let response = messages[config.app.default_lang];
     if (lang in messages) {
       response = messages[lang];
@@ -25,8 +22,9 @@ export default (config) => ({
     response.event.message_create.target.recipient_id = userId;
     return response;
   },
-  confirm: function(lang, userId, cardId) {
+  card: function(lang, userId, cardId) {
     // TODO multi lang support
+    let messages = JSON.parse(texts);
     let response = messages[config.app.default_lang];
     if (lang in messages) {
       response = messages[lang];
@@ -39,6 +37,7 @@ export default (config) => ({
   },
   thanks: function(lang, userId, reportId) {
     // TODO multi lang support
+    let messages = JSON.parse(texts);
     let response = messages[config.app.default_lang];
     if (lang in messages) {
       response = messages[lang];
