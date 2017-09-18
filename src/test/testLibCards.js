@@ -20,7 +20,8 @@ export default function(config) {
       cards(config)._processResponse('error from server', {statusCode: 200},
       {cardId: 3142})
         .catch((err) => {
-          test.value(err).is('error from server');
+          test.value(err.message).is(`Could not request card. `
+          + `Error was: undefined`);
           done();
         });
     }),
@@ -28,7 +29,8 @@ export default function(config) {
       cards(config)._processResponse(null, null, {cardId: 3142})
         .catch((err) => {
           test.value(err.message)
-            .is('No response or incorrect body received from server');
+            .is('Could not request card. No response or incorrect body '
+              + 'received from server. Response was: null');
           done();
         });
     }),
@@ -36,7 +38,8 @@ export default function(config) {
       cards(config)._processResponse(null, {statusCode: 200}, null)
         .catch((err) => {
           test.value(err.message)
-            .is('No response or incorrect body received from server');
+          .is('Could not request card. No response or incorrect body '
+            + 'received from server. Response was: {"statusCode":200}');
           done();
         });
     }),
@@ -44,7 +47,8 @@ export default function(config) {
       cards(config)._processResponse(null, {statusCode: 404}, {cardId: 3142})
         .catch((err) => {
           test.value(err.message)
-            .is('No response or incorrect body received from server');
+          .is('Could not request card. No response or incorrect body '
+            + 'received from server. Response was: {"statusCode":404}');
           done();
         });
     });
@@ -52,7 +56,8 @@ export default function(config) {
       cards(config).getCardLink('user', 'twitter', 'en')
         .catch((err) => {
           test.value(err.message)
-            .is('connect ECONNREFUSED 127.0.0.1:80');
+            .is(`Could not request card. Error was: connect `
+            + `ECONNREFUSED 127.0.0.1:80`);
           done();
         });
     });

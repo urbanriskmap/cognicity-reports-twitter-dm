@@ -57,7 +57,7 @@ export default function(config) {
           });
       })
       .catch((err) => {
-        reject(new Error(`Error requesting card ` + err));
+        reject(err);
       });
   });
   /**

@@ -44,8 +44,8 @@ export default function(config) {
      it('Can execute send of card message', function(done) {
       receive(config)._sendCard(1)
       .catch((err) => {
-        console.log(err.message);
-         test.value(err.message.slice(0, 21)).is(`Error requesting card`);
+         test.value(err.message).is(`Could not request card. Error was: `
+           + `connect ECONNREFUSED 127.0.0.1:80`);
         done();
       });
     });
@@ -54,8 +54,8 @@ export default function(config) {
       receive(config).process({body: {direct_message_events: [testMsg]}})
       // .then(() => done())
       .catch((err) => {
-        test.value(err.message).is(`Error requesting card Error: `
-          + `connect ECONNREFUSED 127.0.0.1:80`);
+        test.value(err.message).is(`Could not request card. Error was: connect `
+          + `ECONNREFUSED 127.0.0.1:80`);
         done();
       });
     });
