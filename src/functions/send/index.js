@@ -28,7 +28,7 @@ module.exports.twitterReply = (event, context, callback) => {
   // Prepare message
   let msg = messages(config).thanks('en', message.username, message.report_id);
   // Send message to user
-  twitter.sendMessage(msg)
+  twitter(config).sendMessage(msg)
     .then((response) => console.log('Message sent.'))
     .catch((err) => console.log(`Error sending message, response from Twitter `
     + `was: ` + JSON.stringify(err)));
