@@ -22,9 +22,10 @@ import request from 'request';
           && body && body.cardId) {
        resolve(body.cardId);
      } else if (error) {
-       reject(error);
+       reject(new Error('Could not request card. Error was: ' + error.message));
      } else {
-       reject(new Error(`No response or incorrect body received from server: ` + JSON.stringify(response)));
+       reject(new Error(`Could not request card. No response or incorrect body `
+         + `received from server. Response was: ` + JSON.stringify(response)));
      }
    });
    /**
@@ -48,7 +49,7 @@ import request from 'request';
        method: 'post',
        headers: {
          'content-type': 'application/json',
-         'x-api-key': config.api_key,
+         'x-api-key': config.server.api_key,
        },
        port: 443,
        json: true,
