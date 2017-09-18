@@ -11,3 +11,4 @@ v0.0.2
 - Added tests
 - Added JSDoc comments
 - Applied ESLint with Google style
+- Updated Travis script to deploy from master
