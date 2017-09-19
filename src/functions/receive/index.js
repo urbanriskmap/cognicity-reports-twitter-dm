@@ -37,7 +37,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     if (crcToken) {
       twitter(config).crcResponse(crcToken)
         .then((response) => callback(response))
-        .catch((err) => console.error(JSON.stringify(err)));
+        .catch((err) => console.log(err));
     } else {
       const response = {
         statusCode: 400,
@@ -54,7 +54,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       receive(config).process(event)
         .then(callback(null))
         .catch((err) => {
-          console.error(JSON.stringify(err));
+          console.log(err));
           callback(null);
         });
     }
