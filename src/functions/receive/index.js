@@ -54,7 +54,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       receive(config).process(event)
         .then(callback(null))
         .catch((err) => {
-          console.log(err));
+          console.log(err);
           callback(null);
         });
     }
