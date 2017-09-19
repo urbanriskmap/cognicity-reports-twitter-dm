@@ -36,7 +36,11 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
     let crcToken = event.query['crc_token'];
     if (crcToken) {
       twitter(config).crcResponse(crcToken)
-        .then((response) => callback(response))
+        .then((response) => {
+          console.log(response);
+          console.log(JSON.stringify(response));
+          callback(response);
+        })
         .catch((err) => console.log('error is here: ' + err));
     } else {
       const response = {
