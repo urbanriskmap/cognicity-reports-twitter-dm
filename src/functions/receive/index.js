@@ -39,7 +39,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
         .then((response) => {
           console.log(response);
           console.log(JSON.stringify(response));
-          callback(response);
+          callback(null, response);
         })
         .catch((err) => console.log('error is here: ' + err));
     } else {
@@ -58,7 +58,7 @@ module.exports.twitterDMWebhook = (event, context, callback) => {
       receive(config).process(event)
         .then(callback(null))
         .catch((err) => {
-          console.log(err);
+          console.log('error is here in post: ' + err);
           callback(null);
         });
     }
