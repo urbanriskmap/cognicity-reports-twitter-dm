@@ -4,3 +4,7 @@ env.yml
 .DS_Store
 bin/
 .nyc_output/
+
+# for vim swap files
+*.swp
+*.swo

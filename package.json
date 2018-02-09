@@ -1,7 +1,7 @@
 {
   "name": "cognicity-twitter-dm-lambda",
   "version": "0.0.2",
-  "description": "Twitter DM bot runnning on AWS lambda",
+  "description": "AWS lambda for generating facebook ads",
   "main": "index.js",
   "scripts": {
     "lint": "eslint src",
@@ -18,8 +18,8 @@
   "license": "GPL-3.0",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "request": "^2.81.0",
-    "twitter": "^1.7.1"
+    "facebook-nodejs-ads-sdk": "^2.11.3",
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
