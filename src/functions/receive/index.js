@@ -1,60 +1,64 @@
-require('dotenv').config();
+import Joi from 'joi';
 
-// Function for sending twitter DMs
-import twitter from '../../lib/twitter/';
-import receive from './receive';
+// Local objects
+import config from '../../config';
+import {handleResponse} from '../../lib/util';
+import Twitter from '../../lib/Twitter';
 
-const config = {
-  oauth: {
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-  },
-  app: {
-    consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
-    twitter_user_id: '905602080252977152', // @riskmapus bot,
-    default_lang: process.env.DEFAULT_LANG,
-    twitter_endpoint: `https://api.twitter.com/1.1/direct_messages/events/new.json`,
-  },
-  server: {
-    card_endpoint: `https://cards.riskmap.us/flood/`,
-    card_api: `https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards`,
-    api_key: process.env.SERVER_API_KEY,
-  },
-};
+// Validation schema
+const _crcTokenSchema = Joi.object().keys({
+    crc_token: Joi.string().required(),
+});
+
+const _dmBodySchema = Joi.object().required();
 
 /**
- * Webhook handler for incoming Twitter DMs
- * @function twitterDMWebhook
+ * Endpoint for receiving twitter DM events (webhook)
+ * @function receive
  * @param {Object} event - AWS Lambda event object
  * @param {Object} context - AWS Lambda context object
- * @param {Function} callback - Callback
+ * @param {Object} callback - Callback (HTTP response)
  */
-module.exports.twitterDMWebhook = (event, context, callback) => {
-  if (event.method === 'GET') {
-    let crcToken = event.query['crc_token'];
-    if (crcToken) {
-      twitter(config).crcResponse(crcToken)
-        .then((response) => callback(response));
+export default async (event, context, callback) => {
+  try {
+    // Twitter object
+    const twitter = new Twitter(config);
+
+    // Twitter Auth check
+    if (event.method === 'GET') {
+      const crcToken = await Joi.validate(event.query, _crcTokenSchema);
+      const response = await twitter.crcResponse(crcToken);
+      console.log('Respond to Twitter CRC request');
+      handleResponse(callback, 200, response);
+
+    // Reply to DM
+    } else if (event.method === 'POST') {
+      // Async loop through incoming DMs
+      const payload = await Joi.validate(event.body, _dmBodySchema);
+
+      // Loop messages (synchronous)
+      for (const item of payload.direct_message_events) {
+        if (item.type === 'message_create' &&
+          item.sender_id != config.TWITTER_BOT_USER_ID) {
+          try {
+            await twitter.sendReply(item);
+            console.log('Sent twitter reply');
+          } catch (err) {
+            console.log('Error sending reply. ' + err.message);
+          }
+        }
+      }
+      handleResponse(callback, 200, {});
+    }
+  // Handle errors
+  } catch (err) {
+    if (err.isJoi) {
+      handleResponse(callback, 400, err.details[0].message);
+      console.log('Validation error: ' + err.details[0].message);
     } else {
-      const response = {
-        statusCode: 400,
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS
-          'Access-Control-Allow-Credentials': true,
-        },
-        body: JSON.stringify({'message':
-          `Error: crc_token missing from request.`}),
-      };
-      callback(null, response);
+      console.log('err', err);
+      handleResponse(callback, 500, err.message);
+      console.log('Error: ' + err.message);
     }
-  } else if (event.method === 'POST') {
-      receive(config).process(event)
-        .then(callback(null))
-        .catch((err) => {
-          console.error(err);
-          callback(null);
-        });
-    }
-  };
+  }
+};

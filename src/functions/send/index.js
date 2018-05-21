@@ -1,35 +1,47 @@
-import twitter from '../../lib/twitter/';
-import messages from '../../lib/twitter/messages';
+import Joi from 'joi';
 
-const config = {
-  oauth: {
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-  },
-  app: {
-    consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
-    twitter_user_id: '905602080252977152', // @riskmapus bot,
-    default_lang: process.env.DEFAULT_LANG,
-    twitter_endpoint: `https://api.twitter.com/1.1/direct_messages/events/new.json`,
-  },
-  server: {
-    card_endpoint: `https://cards.riskmap.us/flood/`,
-    card_api: `https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards`,
-    api_key: process.env.SERVER_API_KEY,
-  },
-};
+// Local objects
+import config from '../../config';
+import {handleResponse} from '../../lib/util';
+import Twitter from '../../lib/Twitter';
 
-module.exports.twitterReply = (event, context, callback) => {
-  // This module listens in to SNS Twitter topic and reads the message published
-  let message = JSON.parse(event.Records[0].Sns.Message);
-  console.log('Message received from SNS topic: ' + message);
-  // Prepare message
-  let msg = messages(config).thanks('en', message.username, message.report_id);
-  // Send message to user
-  twitter(config).sendMessage(msg)
-    .then((response) => console.log('Message sent.'))
-    .catch((err) => console.log(`Error sending message, response from Twitter `
-    + `was: ` + JSON.stringify(err)));
+const _bodySchema = Joi.object().keys({
+  userId: Joi.string(),
+  instanceRegionCode: Joi.string(),
+  language: Joi.string(),
+  network: Joi.string(),
+  reportId: Joi.number(),
+});
+
+/**
+ * Endpoint to send twitter dm messages
+ * @function send
+ * @param {Object} event - AWS Lambda event object
+ * @param {Object} context - AWS Lambda context object
+ * @param {Object} callback - Callback (HTTP response)
+ */
+export default async (event, context, callback) => {
+  try {
+    // Log statements
+    console.log('\n\nLoading Notify handler\n\n');
+    console.log('Incoming body: ' + event.body);
+
+    // Validate body
+    const body = await Joi.validate(event.body, _bodySchema);
+
+    // Class
+    const twitter = new Twitter(config);
+
+    // Send message
+    const result = await twitter.sendThanks(body);
+    handleResponse(callback, 200, result);
+    console.log('Message sent');
+  } catch (err) {
+      if (err.isJoi) {
+        handleResponse(callback, 400, err.details[0].message);
+        console.log('Validation error: ' + err.details[0].message);
+      } else {
+        handleResponse(callback, 500, err.message);
+      }
+  }
 };
