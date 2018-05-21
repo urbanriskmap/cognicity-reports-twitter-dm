@@ -22,19 +22,19 @@ const _dmBodySchema = Joi.object().required();
 export default async (event, context, callback) => {
   try {
     console.log('Handler running');
-    console.log(event.method);
+    console.log(event.httpMethod);
     // Twitter object
     const twitter = new Twitter(config);
 
     // Twitter Auth check
-    if (event.method === 'GET') {
+    if (event.httpMethod === 'GET') {
       const crcToken = await Joi.validate(event.query, _crcTokenSchema);
       const response = await twitter.crcResponse(crcToken);
       console.log('Respond to Twitter CRC request');
       handleResponse(callback, 200, response);
 
     // Reply to DM
-    } else if (event.method === 'POST') {
+    } else if (event.httpMethod === 'POST') {
       // Async loop through incoming DMs
       const payload = await Joi.validate(event.body, _dmBodySchema);
 
