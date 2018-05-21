@@ -4,6 +4,8 @@
 Allows twitter users to submit flood reports via Twitter direct message (dm) chat bot.
 Part of the CogniCity platform, deployed for [Urban Risk Map](https://riskmap.us).
 
+![RiskMap bot](https://raw.githubusercontent.com/urbanriskmap/twitter-dm-bot-lamda/master/doc/images/bot.png)
+
 ### Building
 Built in ES6, compiled with Babel, deployed to AWS Lambda using Serverless.
 Run
