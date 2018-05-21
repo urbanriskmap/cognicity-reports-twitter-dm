@@ -149,7 +149,7 @@ export default class Twitter {
         return new Promise(async (resolve, reject) => {
             const properties = {
                 userId: dmEvent.message_create.sender_id,
-                language: this.config.DEFAULT_LANGUAGE, // TODO
+                language: this.config.DEFAULT_LANGUAGE, // TODO - use lang
                 network: 'twitter',
             };
             try {
