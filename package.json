@@ -20,6 +20,7 @@
     "@urbanriskmap/cognicity-bot-core": "^1.0.2",
     "dotenv": "^4.0.0",
     "joi": "^13.3.0",
+    "oauth": "^0.9.15",
     "request": "^2.81.0"
   },
   "devDependencies": {
