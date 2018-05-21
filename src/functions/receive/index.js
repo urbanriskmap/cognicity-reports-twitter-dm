@@ -21,6 +21,8 @@ const _dmBodySchema = Joi.object().required();
  */
 export default async (event, context, callback) => {
   try {
+    console.log('Handler running');
+    console.log(event.method);
     // Twitter object
     const twitter = new Twitter(config);
 
