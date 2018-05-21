@@ -3,7 +3,7 @@ import Joi from 'joi';
 // Local objects
 import config from '../../config';
 import {handleResponse} from '../../lib/util';
-import Twitter from '../../lib/Twitter';
+import Twitter from '../../lib/twitter';
 
 // Validation schema
 const _crcTokenSchema = Joi.object().keys({
