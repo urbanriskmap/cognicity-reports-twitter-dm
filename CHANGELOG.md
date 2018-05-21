@@ -12,3 +12,6 @@ v0.0.2
 - Added JSDoc comments
 - Applied ESLint with Google style
 - Updated Travis script to deploy from master
+
+v0.0.3
+- Refactored to use cognicity-bot-core module
