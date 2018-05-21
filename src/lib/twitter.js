@@ -67,7 +67,6 @@ export default class Twitter {
     * @return {Object} - Request object
   **/
     _prepareResponse(userId, message) {
-        console.log(message);
         const body = {
             event: {
               type: 'message_create',
@@ -76,7 +75,7 @@ export default class Twitter {
                   recipient_id: userId,
                 },
                 message_data: {
-                  text: 'testing message 22',
+                  text: message.text + link,
                 },
               },
             },
