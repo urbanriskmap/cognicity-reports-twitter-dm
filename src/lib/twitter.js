@@ -67,6 +67,7 @@ export default class Twitter {
     * @return {Object} - Request object
   **/
     _prepareResponse(userId, message) {
+        console.log(message);
         const body = {
             event: {
               type: 'message_create',
@@ -75,7 +76,7 @@ export default class Twitter {
                   recipient_id: userId,
                 },
                 message_data: {
-                  text: 'testing message',
+                  text: 'testing message 22',
                 },
               },
             },
@@ -114,7 +115,6 @@ export default class Twitter {
   _sendMessage(properties) {
     return new Promise((resolve, reject) => {
         console.log('Sending request to Twitter.');
-        console.log(properties);
         this.request.post(properties, function(err, response, body) {
             // error handling.
             console.log(err);
