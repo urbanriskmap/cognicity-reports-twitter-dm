@@ -75,7 +75,7 @@ export default class Twitter {
                   recipient_id: userId,
                 },
                 message_data: {
-                  text: message.text + link,
+                  text: message.text + message.link,
                 },
               },
             },
