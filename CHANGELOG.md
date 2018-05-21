@@ -15,3 +15,4 @@ v0.0.2
 
 v0.0.3
 - Refactored to use cognicity-bot-core module
+- Removed serverless requirement

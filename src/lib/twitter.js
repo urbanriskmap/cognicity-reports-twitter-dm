@@ -75,7 +75,7 @@ export default class Twitter {
                   recipient_id: userId,
                 },
                 message_data: {
-                  text: message,
+                  text: 'testing message',
                 },
               },
             },
@@ -113,13 +113,13 @@ export default class Twitter {
   **/
   _sendMessage(properties) {
     return new Promise((resolve, reject) => {
-      console.log('Sending request to Twitter.');
-
-      this.request.post(properties, function(err, response, body) {
-          // error handling.
-          console.log(err);
-          resolve(null);
-      });
+        console.log('Sending request to Twitter.');
+        console.log(properties);
+        this.request.post(properties, function(err, response, body) {
+            // error handling.
+            console.log(err);
+            resolve(null);
+        });
     });
   }
 
