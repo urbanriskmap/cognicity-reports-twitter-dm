@@ -12,21 +12,21 @@ before_deploy:
 
 deploy:
   - provider: lambda
-  function_name: "cognicity-twitter-dm-webhook-dev"
-  region: $AWS_REGION
-  role: $AWS_LAMBDA_ROLE
-  runtime: "nodejs8.10"
-  module_name: "bin/functions/receive"
-  handler_name: "default"
-  on:
-    branch: dev
+    function_name: "cognicity-twitter-dm-webhook-dev"
+    region: $AWS_REGION
+    role: $AWS_LAMBDA_ROLE
+    runtime: "nodejs8.10"
+    module_name: "bin/functions/receive"
+    handler_name: "default"
+    on:
+      branch: dev
   - provider: lambda
-  function_name: "cognicity-twitter-dm-reply-dev"
-  region: $AWS_REGION
-  role: $AWS_LAMBDA_ROLE
-  runtime: "nodejs8.10"
-  module_name: "bin/functions/send"
-  handler_name: "default"
-  on:
-    branch: dev
+    function_name: "cognicity-twitter-dm-reply-dev"
+    region: $AWS_REGION
+    role: $AWS_LAMBDA_ROLE
+    runtime: "nodejs8.10"
+    module_name: "bin/functions/send"
+    handler_name: "default"
+    on:
+      branch: dev
   
