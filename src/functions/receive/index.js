@@ -41,23 +41,24 @@ export default async (event, context, callback) => {
       // Async loop through incoming DMs
       const payload = await Joi.validate(event.body, _dmBodySchema);
       console.log(payload);
-
-      // Loop messages (synchronous)
-      for (const item of payload.direct_message_events) {
-        console.log(item.type);
-        console.log(item.message_create.sender_id);
-        console.log(config.TWITTER_BOT_USER_ID);
-        if (item.type === 'message_create' &&
-          item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
-          try {
-            // await twitter.sendReply(item);
-            console.log('Sent twitter reply');
-          } catch (err) {
-            console.log('Error sending reply. ' + err.message);
+      if (payload.direct_message_events){
+        // Loop messages (synchronous)
+        for (const item of payload.direct_message_events) {
+          console.log(item.type);
+          console.log(item.message_create.sender_id);
+          console.log(config.TWITTER_BOT_USER_ID);
+          if (item.type === 'message_create' &&
+            item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
+            try {
+              // await twitter.sendReply(item);
+              console.log('Sent twitter reply');
+            } catch (err) {
+              console.log('Error sending reply. ' + err.message);
+            }
           }
         }
+        handleResponse(callback, 200, {});
       }
-      handleResponse(callback, 200, {});
     }
   // Handle errors
   } catch (err) {
