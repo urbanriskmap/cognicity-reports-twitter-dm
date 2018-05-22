@@ -1,0 +1,18 @@
+{
+    "en": {
+      "text": {
+        "report": "Report flooding",
+        "map": "View live flood map",
+        "view": "View your report",
+        "add": "Add another report"
+      }
+    },
+    "id": {
+        "text": {
+            "report": "[ID] Report flooding",
+            "map": "[ID] View live reports",
+            "view": "[ID] View your report",
+            "add": "[ID] Add another report"
+        }
+    }
+}

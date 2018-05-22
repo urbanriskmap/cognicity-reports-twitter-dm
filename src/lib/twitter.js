@@ -4,6 +4,7 @@ import request from 'request';
 // Locals
 import Bot from '@urbanriskmap/cognicity-bot-core';
 import messages from './messages.json';
+import buttons from './buttons.json';
 
 /**
  * Class for sending CogniCity messages via Twitter DM
@@ -66,7 +67,7 @@ export default class Twitter {
     * @param {Object} message - Bot message object
     * @return {Object} - Request object
   **/
-    _prepareResponse(userId, message) {
+    _prepareThanksResponse(userId, message) {
         const body = {
             event: {
               type: 'message_create',
@@ -106,25 +107,32 @@ export default class Twitter {
     * Prepares Twitter message
     * @method _prepareResponse
     * @private
-    * @param {String} userId - User or Telegram chat ID for reply
-    * @param {Object} message - Bot message object
+    * @param {Object} properties - Reply properties
+    * @param {String} properties.userId - User or Telegram chat ID for reply
+    * @param {Object} properties.message - Bot message object
+    * @param {String} properties.language - User locale (e.g. 'en')
     * @return {Object} - Request object
   **/
-    _prepareCardResponse(userId, message) {
+    _prepareCardResponse(properties) {
         const body = {
             event: {
             type: 'message_create',
             message_create: {
                 target: {
-                recipient_id: userId,
+                    recipient_id: properties.userId,
                 },
                 message_data: {
-                text: message.text,
+                text: properties.message.text,
                 ctas: [
                     {
-                    'type': 'web_url',
-                    'label': 'Add your report',
-                    'url': 'https://dev.riskmap.us',
+                    type: 'web_url',
+                    label: buttons[properties.language].text.view,
+                    url: 'https://dev.riskmap.us/',
+                    },
+                    {
+                    type: 'web_url',
+                    label: buttons[properties.language].text.add,
+                    url: properties.message.link,
                     },
                 ],
                 },
@@ -183,7 +191,7 @@ export default class Twitter {
         return new Promise((resolve, reject) => {
         this.bot.thanks(body)
             .then((message) => {
-            const response = this._prepareResponse(body.userId, message);
+            const response = this._prepareThanksResponse(body.userId, message);
             resolve(this._sendMessage(response));
             }).catch((err) => reject(err));
         });
@@ -199,18 +207,17 @@ export default class Twitter {
         return new Promise(async (resolve, reject) => {
             const properties = {
                 userId: dmEvent.message_create.sender_id,
-                language: this.config.DEFAULT_LANGUAGE, // TODO - use lang
+                language: this.config.DEFAULT_LANGUAGE, // TODO - use msg lang
                 network: 'twitter',
             };
             try {
-                let message = await this.bot.default(properties);
-                if (this._classify(
-                    dmEvent.message_create.message_data.text) === 'flood') {
-                    message = await this.bot.card(properties);
-                }
-                const response = this._prepareCardResponse(
-                        properties.userId, message);
-                    resolve(this._sendMessage(response));
+                const message = await this.bot.card(properties);
+                const response = this._prepareCardResponse({
+                    userId: properties.userId,
+                    message: message,
+                    language: properties.language,
+                });
+                resolve(this._sendMessage(response));
             } catch (err) {
                 reject(err);
             }
