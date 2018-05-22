@@ -28,7 +28,8 @@ export default async (event, context, callback) => {
 
     // Twitter Auth check
     if (event.httpMethod === 'GET') {
-      const crcToken = await Joi.validate(event.queryStringParameters, _crcTokenSchema);
+      const crcToken = await Joi.validate(
+        event.queryStringParameters, _crcTokenSchema);
       console.log(crcToken);
       const response = await twitter.crcResponse(crcToken);
       console.log('Respond to Twitter CRC request');
