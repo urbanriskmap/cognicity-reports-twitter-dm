@@ -198,8 +198,13 @@ export default class Twitter {
                     language: body.language,
                 };
                 const response = await this._prepareThanksResponse(properties);
+                console.log(thanks);
+                console.log(card);
+                console.log(reponse);
                 resolve(this._sendMessage(response));
+                console.log('Sending thanks message');
             } catch (err) {
+                console.log('Error sending thanks message.'. err.message)
                 reject(err);
             }
         });
@@ -229,6 +234,7 @@ export default class Twitter {
                 console.log('response', response);
                 resolve(this._sendMessage(response));
             } catch (err) {
+                console.log('Error responding to dmEvent.', err.message);
                 reject(err);
             }
         });
