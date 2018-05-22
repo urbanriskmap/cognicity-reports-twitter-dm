@@ -190,9 +190,7 @@ export default class Twitter {
         return new Promise(async (resolve, reject) => {
             try {
                 const thanks = await this.bot.thanks(body);
-                console.log(thanks);
                 const card = await this.bot.card(body);
-                console.log(card);
                 const properties = {
                     thanks: thanks,
                     card: card,
@@ -200,9 +198,6 @@ export default class Twitter {
                     language: body.language,
                 };
                 const response = await this._prepareThanksResponse(properties);
-                console.log(thanks);
-                console.log(card);
-                console.log(response);
                 resolve(this._sendMessage(response));
                 console.log('Sending thanks message');
             } catch (err) {
@@ -227,13 +222,11 @@ export default class Twitter {
             };
             try {
                 const message = await this.bot.card(properties);
-                console.log('message', message);
                 const response = this._prepareCardResponse({
                     userId: properties.userId,
                     message: message,
                     language: properties.language,
                 });
-                console.log('response', response);
                 resolve(this._sendMessage(response));
             } catch (err) {
                 console.log('Error responding to dmEvent.', err.message);
