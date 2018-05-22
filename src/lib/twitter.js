@@ -122,11 +122,11 @@ export default class Twitter {
                 text: message.text,
                 ctas: [
                     {
-                    "type": "web_url",
-                    "label": "Add your report",
-                    "url": message.link
+                    'type': 'web_url',
+                    'label': 'Add your report',
+                    'url': 'https://dev.riskmap.us',
                     },
-                ]
+                ],
                 },
             },
             },
