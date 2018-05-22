@@ -44,10 +44,10 @@ export default async (event, context, callback) => {
       // Loop messages (synchronous)
       for (const item of payload.direct_message_events) {
         console.log(item.type);
-        console.log(item.sender_id);
+        console.log(item.message_create.sender_id);
         console.log(config.TWITTER_BOT_USER_ID);
         if (item.type === 'message_create' &&
-          item.sender_id !== config.TWITTER_BOT_USER_ID) {
+          item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
           try {
             // await twitter.sendReply(item);
             console.log('Sent twitter reply');
