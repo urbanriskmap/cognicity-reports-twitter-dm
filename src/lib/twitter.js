@@ -173,7 +173,7 @@ export default class Twitter {
         console.log('Sending request to Twitter.');
         this.request.post(properties, function(err, response, body) {
             if (err) {
-                console.log('Error sending request to Twitter. ', err.message);
+                console.log('Error sending request to Twitter. ', err);
             }
             resolve(null);
         });
@@ -204,7 +204,7 @@ export default class Twitter {
                 resolve(this._sendMessage(response));
                 console.log('Sending thanks message');
             } catch (err) {
-                console.log('Error sending thanks message.'. err.message);
+                console.log('Error sending thanks message.', err);
                 reject(err);
             }
         });
