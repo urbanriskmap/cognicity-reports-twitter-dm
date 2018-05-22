@@ -175,6 +175,7 @@ export default class Twitter {
             if (err) {
                 console.log('Error sending request to Twitter. ', err);
             }
+            console.log(response);
             resolve(null);
         });
     });
