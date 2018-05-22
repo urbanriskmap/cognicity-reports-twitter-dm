@@ -8,7 +8,7 @@ import Twitter from '../../lib/twitter';
 // Validation schema
 const _crcTokenSchema = Joi.object().keys({
     crc_token: Joi.string().required(),
-    nonce: Joi.string()
+    nonce: Joi.string(),
 });
 
 const _dmBodySchema = Joi.object().required();
@@ -34,7 +34,6 @@ export default async (event, context, callback) => {
       console.log(params);
       const response = await twitter.crcResponse(params.crc_token);
       console.log('Respond to Twitter CRC request.', response);
-      //handleResponse(callback, 200, response);
       crcResponse(callback, 200, response);
 
     // Reply to DM

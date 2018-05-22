@@ -5,7 +5,7 @@ import request from 'request';
 import OAuth from 'OAuth';
 const OAuth2 = OAuth.OAuth2;   
 
-const ENV = 'prod'
+const ENV = 'production'
 
 const run = function(){
     const oauth2 = new OAuth2(config.TWITTER_CONSUMER_KEY,
