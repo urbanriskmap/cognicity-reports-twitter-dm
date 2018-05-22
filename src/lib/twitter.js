@@ -200,11 +200,11 @@ export default class Twitter {
                 const response = await this._prepareThanksResponse(properties);
                 console.log(thanks);
                 console.log(card);
-                console.log(reponse);
+                console.log(response);
                 resolve(this._sendMessage(response));
                 console.log('Sending thanks message');
             } catch (err) {
-                console.log('Error sending thanks message.'. err.message)
+                console.log('Error sending thanks message.'. err.message);
                 reject(err);
             }
         });
