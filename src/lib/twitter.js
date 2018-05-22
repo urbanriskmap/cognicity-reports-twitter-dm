@@ -172,6 +172,7 @@ export default class Twitter {
     return new Promise((resolve, reject) => {
         console.log('Sending request to Twitter.');
         console.log(properties);
+        console.log(JSON.stringify(properties));
         this.request.post(properties, function(err, response, body) {
             if (err) {
                 console.log('Error sending request to Twitter. ', err);
