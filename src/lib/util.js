@@ -17,9 +17,7 @@ module.exports = {
         headers: {
             'Access-Control-Allow-Credentials': true,
             'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify({
-            response_token: token,
-        }),
+        },  
+        body: JSON.stringify(token),
     }),
 };
