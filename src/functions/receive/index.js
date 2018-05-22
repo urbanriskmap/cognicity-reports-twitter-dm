@@ -8,6 +8,7 @@ import Twitter from '../../lib/twitter';
 // Validation schema
 const _crcTokenSchema = Joi.object().keys({
     crc_token: Joi.string().required(),
+    nonce: Joi.string()
 });
 
 const _dmBodySchema = Joi.object().required();
@@ -28,10 +29,10 @@ export default async (event, context, callback) => {
     console.log(event.queryStringParameters);
     // Twitter Auth check
     if (event.httpMethod === 'GET') {
-      const crcToken = await Joi.validate(
+      const params = await Joi.validate(
         event.queryStringParameters, _crcTokenSchema);
-      console.log(crcToken);
-      const response = await twitter.crcResponse(crcToken);
+      console.log(params);
+      const response = await twitter.crcResponse(params.crc_token);
       console.log('Respond to Twitter CRC request');
       handleResponse(callback, 200, response);
 
