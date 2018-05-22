@@ -24,23 +24,6 @@ export default class Twitter {
         this.request = request;
     }
 
-    /**
-     * Method to filter text by keyword
-     * @method _classify
-     * @private
-     * @param {String} text - message from user
-     * @return {String} - keyword or null
-     */
-    _classify(text) {
-        // filter the message by keyword
-        const re = new RegExp(/\/flood/gi);
-        if (re.exec(text) !== null) {
-          return 'flood';
-        } else {
-          return null;
-        }
-    }
-
    /**
     * Prepares Twitter CRC response
     * @function crcResponse
@@ -61,51 +44,66 @@ export default class Twitter {
 
     /**
     * Prepares Twitter message
-    * @method _prepareResponse
+    * @method _prepareThanksResponse
     * @private
-    * @param {String} userId - User or Telegram chat ID for reply
-    * @param {Object} message - Bot message object
+    * @param {Object} properties - Reply properties
+    * @param {String} properties.userId - User or Telegram chat ID for reply
+    * @param {Object} properties.card - Bot card message object
+    * @param {String} properties.language - User locale (e.g. 'en')
+    * @param {String} properties.thanks - User locale (e.g. 'en')
     * @return {Object} - Request object
-  **/
-    _prepareThanksResponse(userId, message) {
-        const body = {
-            event: {
-              type: 'message_create',
-              message_create: {
+    **/
+ _prepareThanksResponse(properties) {
+    const body = {
+        event: {
+            type: 'message_create',
+            message_create: {
                 target: {
-                  recipient_id: userId,
+                    recipient_id: properties.userId,
                 },
                 message_data: {
-                  text: message.text + (message.link || ''),
+                    text: properties.thanks.text,
+                    ctas: [
+                        {
+                        type: 'web_url',
+                        label: buttons[properties.language].text.view,
+                        url: properties.thanks.link,
+                        },
+                        {
+                        type: 'web_url',
+                        label: buttons[properties.language].text.add,
+                        url: properties.card.link,
+                        },
+                    ],
                 },
-              },
             },
-          };
-        const endpoint = this.config.TWITTER_ENDPOINT +
-            'direct_messages/events/new.json';
+        },
+    };
+    const endpoint = this.config.TWITTER_ENDPOINT +
+        'direct_messages/events/new.json';
 
-        const oauth = {
-            consumer_key: this.config.TWITTER_CONSUMER_KEY,
-            consumer_secret: this.config.TWITTER_CONSUMER_SECRET,
-            token: this.config.TWITTER_TOKEN,
-            token_secret: this.config.TWITTER_TOKEN_SECRET,
-        };
+    const oauth = {
+        consumer_key: this.config.TWITTER_CONSUMER_KEY,
+        consumer_secret: this.config.TWITTER_CONSUMER_SECRET,
+        token: this.config.TWITTER_TOKEN,
+        token_secret: this.config.TWITTER_TOKEN_SECRET,
+    };
 
-        const request = {
-            url: endpoint,
-            oauth: oauth,
-            json: true,
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: body,
-        };
-        return (request);
-    }
+    const request = {
+        url: endpoint,
+        oauth: oauth,
+        json: true,
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: body,
+    };
+    return (request);
+}
 
-    /**
+  /**
     * Prepares Twitter message
-    * @method _prepareResponse
+    * @method _prepareCardResponse
     * @private
     * @param {Object} properties - Reply properties
     * @param {String} properties.userId - User or Telegram chat ID for reply
@@ -126,13 +124,13 @@ export default class Twitter {
                 ctas: [
                     {
                     type: 'web_url',
-                    label: buttons[properties.language].text.view,
-                    url: 'https://dev.riskmap.us/',
+                    label: buttons[properties.language].text.report,
+                    url: properties.message.link,
                     },
                     {
                     type: 'web_url',
-                    label: buttons[properties.language].text.add,
-                    url: properties.message.link,
+                    label: buttons[properties.language].text.map,
+                    url: this.config.MAP_URL,
                     },
                 ],
                 },
@@ -188,12 +186,21 @@ export default class Twitter {
     * @return {Promise} - Result of request
     **/
     sendThanks(body) {
-        return new Promise((resolve, reject) => {
-        this.bot.thanks(body)
-            .then((message) => {
-            const response = this._prepareThanksResponse(body.userId, message);
-            resolve(this._sendMessage(response));
-            }).catch((err) => reject(err));
+        return new Promise(async (resolve, reject) => {
+            try {
+                const thanks = await this.bot.thanks(body);
+                const card = await this.bot.card(body);
+                const properties = {
+                    thanks: thanks,
+                    message: card,
+                    userId: body.userId,
+                    language: body.language,
+                };
+                const response = await this._prepareThanksResponse(properties);
+                resolve(this._sendMessage(response));
+            } catch (err) {
+                reject(err);
+            }
         });
     }
 
