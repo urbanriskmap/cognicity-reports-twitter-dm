@@ -195,7 +195,7 @@ export default class Twitter {
                 console.log(card);
                 const properties = {
                     thanks: thanks,
-                    message: card,
+                    card: card,
                     userId: body.userId,
                     language: body.language,
                 };
