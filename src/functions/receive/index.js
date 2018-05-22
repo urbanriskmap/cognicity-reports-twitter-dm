@@ -25,7 +25,7 @@ export default async (event, context, callback) => {
     console.log(event.httpMethod);
     // Twitter object
     const twitter = new Twitter(config);
-
+    console.log(event.queryStringParameters);
     // Twitter Auth check
     if (event.httpMethod === 'GET') {
       const crcToken = await Joi.validate(
