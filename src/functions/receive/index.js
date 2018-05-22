@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 // Local objects
 import config from '../../config';
-import {handleResponse} from '../../lib/util';
+import {handleResponse, crcResponse} from '../../lib/util';
 import Twitter from '../../lib/twitter';
 
 // Validation schema
@@ -33,8 +33,9 @@ export default async (event, context, callback) => {
         event.queryStringParameters, _crcTokenSchema);
       console.log(params);
       const response = await twitter.crcResponse(params.crc_token);
-      console.log('Respond to Twitter CRC request');
-      handleResponse(callback, 200, response);
+      console.log('Respond to Twitter CRC request.', response);
+      //handleResponse(callback, 200, response);
+      crcResponse(callback, 200, response);
 
     // Reply to DM
     } else if (event.httpMethod === 'POST') {
