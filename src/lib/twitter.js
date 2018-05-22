@@ -172,8 +172,9 @@ export default class Twitter {
     return new Promise((resolve, reject) => {
         console.log('Sending request to Twitter.');
         this.request.post(properties, function(err, response, body) {
-            // error handling.
-            console.log(err);
+            if (err) {
+                console.log('Error sending request to Twitter. ', err.message);
+            }
             resolve(null);
         });
     });
@@ -219,11 +220,13 @@ export default class Twitter {
             };
             try {
                 const message = await this.bot.card(properties);
+                console.log('message', message);
                 const response = this._prepareCardResponse({
                     userId: properties.userId,
                     message: message,
                     language: properties.language,
                 });
+                console.log('response', response);
                 resolve(this._sendMessage(response));
             } catch (err) {
                 reject(err);
