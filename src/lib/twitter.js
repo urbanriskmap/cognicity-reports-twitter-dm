@@ -183,7 +183,7 @@ export default class Twitter {
         return new Promise((resolve, reject) => {
         this.bot.thanks(body)
             .then((message) => {
-            const response = this._prepareCardResponse(body.userId, message);
+            const response = this._prepareResponse(body.userId, message);
             resolve(this._sendMessage(response));
             }).catch((err) => reject(err));
         });
@@ -208,7 +208,7 @@ export default class Twitter {
                     dmEvent.message_create.message_data.text) === 'flood') {
                     message = await this.bot.card(properties);
                 }
-                const response = this._prepareResponse(
+                const response = this._prepareCardResponse(
                         properties.userId, message);
                     resolve(this._sendMessage(response));
             } catch (err) {
