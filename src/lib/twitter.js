@@ -171,11 +171,11 @@ export default class Twitter {
   _sendMessage(properties) {
     return new Promise((resolve, reject) => {
         console.log('Sending request to Twitter.');
+        console.log(properties);
         this.request.post(properties, function(err, response, body) {
             if (err) {
                 console.log('Error sending request to Twitter. ', err);
             }
-            console.log(response);
             resolve(null);
         });
     });
