@@ -50,7 +50,7 @@ export default class Twitter {
     * @param {String} properties.userId - User or Telegram chat ID for reply
     * @param {Object} properties.card - Bot card message object
     * @param {String} properties.language - User locale (e.g. 'en')
-    * @param {String} properties.thanks - User locale (e.g. 'en')
+    * @param {String} properties.thanks - Bot thanks message object
     * @return {Object} - Request object
     **/
  _prepareThanksResponse(properties) {
@@ -190,7 +190,9 @@ export default class Twitter {
         return new Promise(async (resolve, reject) => {
             try {
                 const thanks = await this.bot.thanks(body);
+                console.log(thanks);
                 const card = await this.bot.card(body);
+                console.log(card);
                 const properties = {
                     thanks: thanks,
                     message: card,
