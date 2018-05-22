@@ -102,6 +102,57 @@ export default class Twitter {
         return (request);
     }
 
+    /**
+    * Prepares Twitter message
+    * @method _prepareResponse
+    * @private
+    * @param {String} userId - User or Telegram chat ID for reply
+    * @param {Object} message - Bot message object
+    * @return {Object} - Request object
+  **/
+    _prepareCardResponse(userId, message) {
+        const body = {
+            event: {
+            type: 'message_create',
+            message_create: {
+                target: {
+                recipient_id: userId,
+                },
+                message_data: {
+                text: message.text,
+                ctas: [
+                    {
+                    "type": "web_url",
+                    "label": "Add your report",
+                    "url": message.link
+                    },
+                ]
+                },
+            },
+            },
+        };
+        const endpoint = this.config.TWITTER_ENDPOINT +
+            'direct_messages/events/new.json';
+
+        const oauth = {
+            consumer_key: this.config.TWITTER_CONSUMER_KEY,
+            consumer_secret: this.config.TWITTER_CONSUMER_SECRET,
+            token: this.config.TWITTER_TOKEN,
+            token_secret: this.config.TWITTER_TOKEN_SECRET,
+        };
+
+        const request = {
+            url: endpoint,
+            oauth: oauth,
+            json: true,
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: body,
+        };
+        return (request);
+    }
+
   /**
     * Send Facebook message
     * @method _sendMessage
@@ -132,7 +183,7 @@ export default class Twitter {
         return new Promise((resolve, reject) => {
         this.bot.thanks(body)
             .then((message) => {
-            const response = this._prepareResponse(body.userId, message);
+            const response = this._prepareCardResponse(body.userId, message);
             resolve(this._sendMessage(response));
             }).catch((err) => reject(err));
         });
