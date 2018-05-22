@@ -23,15 +23,12 @@ const _dmBodySchema = Joi.object().required();
 export default async (event, context, callback) => {
   try {
     console.log('Handler running');
-    console.log(event.httpMethod);
     // Twitter object
     const twitter = new Twitter(config);
-    console.log(event.queryStringParameters);
     // Twitter Auth check
     if (event.httpMethod === 'GET') {
       const params = await Joi.validate(
         event.queryStringParameters, _crcTokenSchema);
-      console.log(params);
       const response = await twitter.crcResponse(params.crc_token);
       console.log('Respond to Twitter CRC request.', response);
       crcResponse(callback, 200, response);
@@ -40,17 +37,13 @@ export default async (event, context, callback) => {
     } else if (event.httpMethod === 'POST') {
       // Async loop through incoming DMs
       const payload = await Joi.validate(event.body, _dmBodySchema);
-      console.log(payload);
       if (payload.direct_message_events){
         // Loop messages (synchronous)
         for (const item of payload.direct_message_events) {
-          console.log(item.type);
-          console.log(item.message_create.sender_id);
-          console.log(config.TWITTER_BOT_USER_ID);
           if (item.type === 'message_create' &&
             item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
             try {
-              // await twitter.sendReply(item);
+              await twitter.sendReply(item);
               console.log('Sent twitter reply');
             } catch (err) {
               console.log('Error sending reply. ' + err.message);
