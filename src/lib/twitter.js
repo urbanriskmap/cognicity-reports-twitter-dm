@@ -53,8 +53,12 @@ export default class Twitter {
             this.config.TWITTER_CONSUMER_SECRET)
             .update(body)
             .digest('base64');
-        console.log(hash);
+        const hashstring = 'sha256=' + hash;
+        const state = crypto.timingSafeEqual(Buffer.from(hashstring), Buffer.from(signature))
+
+        console.log(hashstring);
         console.log(signature);
+        console.log(state);
     }
 
     /**
