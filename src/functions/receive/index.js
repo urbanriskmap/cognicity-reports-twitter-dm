@@ -13,6 +13,10 @@ const _crcTokenSchema = Joi.object().keys({
 
 const _dmBodySchema = Joi.object().required();
 
+const _dmHeaderSchema = Joi.object().required().keys({
+  'X-Twitter-Webhooks-Signature': Joi.string().required(),
+});
+
 /**
  * Endpoint for receiving twitter DM events (webhook)
  * @function receive
@@ -35,26 +39,32 @@ export default async (event, context, callback) => {
 
     // Reply to DM
     } else if (event.httpMethod === 'POST') {
-      // Async loop through incoming DMs
-      twitter.signatureValidation(event.headers['X-Twitter-Webhooks-Signature'],
-        event.body);
+      // Check request is authentic
+      const headers = await Joi.validate(event.headers, _dmHeaderSchema);
       const payload = await Joi.validate(event.body, _dmBodySchema);
-      console.log(JSON.stringify(payload));
-      if (payload.direct_message_events) {
-        // Loop messages (synchronous)
-        for (const item of payload.direct_message_events) {
-          if (item.type === 'message_create' &&
-            item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
-            try {
-              console.log(JSON.stringify(item));
-              await twitter.sendReply(item);
-              console.log('Sent twitter reply');
-            } catch (err) {
-              console.log('Error sending reply. ' + err.message);
+      const signed = twitter.signatureValidation(
+        headers['X-Twitter-Webhooks-Signature'], payload);
+      // Async loop through incoming DMs
+      if (signed === true) {
+        if (payload.direct_message_events) {
+          // Loop messages (synchronous)
+          for (const item of payload.direct_message_events) {
+            if (item.type === 'message_create' &&
+              item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
+              try {
+                console.log(JSON.stringify(item));
+                await twitter.sendReply(item);
+                console.log('Sent twitter reply');
+              } catch (err) {
+                console.log('Error sending reply. ' + err.message);
+              }
             }
           }
+          handleResponse(callback, 200, {});
         }
-        handleResponse(callback, 200, {});
+      } else {
+        console.log('Request signature did not match');
+        handleResponse(callback, 403, {});
       }
     }
   // Handle errors

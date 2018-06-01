@@ -45,8 +45,9 @@ export default class Twitter {
     /**
     * Validates Twitter request signature
     * @function signatureValidation
-    * @param {Object} signature - request signature
-    * @param {Object} body - incoming body
+    * @param {Object} signature - Request signature
+    * @param {Object} body - Incoming body
+    * @return {Bool} state - Result of validation
     **/
     signatureValidation(signature, body) {
         const hash = crypto.createHmac('sha256',
@@ -57,9 +58,7 @@ export default class Twitter {
         const state = crypto.timingSafeEqual(
             Buffer.from(hashstring), Buffer.from(signature));
 
-        console.log(hashstring);
-        console.log(signature);
-        console.log(state);
+        return (state);
     }
 
     /**
