@@ -43,6 +43,7 @@ export default async (event, context, callback) => {
           if (item.type === 'message_create' &&
             item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
             try {
+              console.log(JSON.stringify(item));
               await twitter.sendReply(item);
               console.log('Sent twitter reply');
             } catch (err) {
