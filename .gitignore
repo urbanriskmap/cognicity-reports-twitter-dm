@@ -6,3 +6,4 @@ bin/
 .nyc_output/
 private/
 .env
+.env-dev
