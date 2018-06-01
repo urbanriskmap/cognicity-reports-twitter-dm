@@ -43,6 +43,19 @@ export default class Twitter {
     }
 
     /**
+    * Validates Twitter request signature
+    * @function signatureValidation
+    * @param {Object} signature - request signature
+    * @param {Object} body - incoming body
+    **/
+    signatureValidation(signature, body) {
+        const hash = crypto.createHmac('sha256', body)
+            .update(this.config.TWITTER_CONSUMER_SECRET);
+        console.log(hash);
+        console.log(signature);
+    }
+
+    /**
     * Prepares Twitter message
     * @method _prepareThanksResponse
     * @private
