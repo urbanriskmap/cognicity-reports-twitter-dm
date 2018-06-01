@@ -4,11 +4,11 @@
   "description": "Twitter DM bot runnning on AWS lambda",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src",
+    "lint": "eslint --fix src",
     "mocha": "nyc mocha --compilers js:babel-core/register src/test/index",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "npm run lint && npm run mocha",
-    "build": "./node_modules/.bin/babel src -d bin"
+    "build": "./node_modules/.bin/babel src -d bin && cp src/lib/*.json bin/lib/"
   },
   "keywords": [
     "bot",
@@ -17,9 +17,11 @@
   "author": "Tomas Holderness",
   "license": "GPL-3.0",
   "dependencies": {
+    "@urbanriskmap/cognicity-bot-core": "^1.0.2",
     "dotenv": "^4.0.0",
-    "request": "^2.81.0",
-    "twitter": "^1.7.1"
+    "joi": "^13.3.0",
+    "oauth": "^0.9.15",
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

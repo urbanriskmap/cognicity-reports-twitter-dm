@@ -1,0 +1,22 @@
+{
+    "en": {
+      "text": {
+        "welcome": "Welcome to RiskMap bot. Click 'Get Started' or send me a message.",
+        "start": "> Get Started",
+        "report": "Report flooding",
+        "map": "View live flood map",
+        "view": "View your report",
+        "add": "Add another report"
+      }
+    },
+    "es": {
+        "text": {
+            "welcome": "[ES} Welcome to RiskMap bot. Click 'Get Started' or send me a message.",
+            "start": "[ES] Get Started",
+            "report": "[ES] Report flooding",
+            "map": "[ES] View live reports",
+            "view": "[ES] View your report",
+            "add": "[ES] Add another report"
+        }
+    }
+}

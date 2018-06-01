@@ -4,3 +4,6 @@ env.yml
 .DS_Store
 bin/
 .nyc_output/
+private/
+.env
+.env-dev

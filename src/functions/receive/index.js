@@ -1,65 +1,82 @@
-require('dotenv').config();
+import Joi from 'joi';
 
-// Function for sending twitter DMs
-import twitter from '../../lib/twitter/';
-import receive from './receive';
+// Local objects
+import config from '../../config';
+import {handleResponse, crcResponse} from '../../lib/util';
+import Twitter from '../../lib/twitter';
 
-const config = {
-  oauth: {
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    token: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-  },
-  app: {
-    consumer_secret: process.env.TWITTER_APP_CONSUMER_SECRET,
-    twitter_user_id: '905602080252977152', // @riskmapus bot,
-    default_lang: process.env.DEFAULT_LANG,
-    twitter_endpoint: `https://api.twitter.com/1.1/direct_messages/events/new.json`,
-  },
-  server: {
-    card_endpoint: `https://cards.riskmap.us/flood/`,
-    card_api: `https://3m3l15fwsf.execute-api.us-west-2.amazonaws.com/prod/cards`,
-    api_key: process.env.SERVER_API_KEY,
-  },
-};
+// Validation schema
+const _crcTokenSchema = Joi.object().keys({
+    crc_token: Joi.string().required(),
+    nonce: Joi.string(),
+});
+
+const _dmBodySchema = Joi.object().required();
+
+const _dmHeaderSchema = Joi.object().keys({
+  'X-Twitter-Webhooks-Signature': Joi.string().required(),
+});
 
 /**
- * Webhook handler for incoming Twitter DMs
- * @function twitterDMWebhook
+ * Endpoint for receiving twitter DM events (webhook)
+ * @function receive
  * @param {Object} event - AWS Lambda event object
  * @param {Object} context - AWS Lambda context object
- * @param {Function} callback - Callback
+ * @param {Object} callback - Callback (HTTP response)
  */
-module.exports.twitterDMWebhook = (event, context, callback) => {
-  if (event.method === 'GET') {
-    let crcToken = event.query['crc_token'];
-    if (crcToken) {
-      twitter(config).crcResponse(crcToken)
-        .then((response) => {
-          console.log(response);
-          console.log(JSON.stringify(response));
-          callback(null, response);
-        })
-        .catch((err) => console.log('error is here: ' + err));
+export default async (event, context, callback) => {
+  try {
+    console.log('Handler running');
+    // Twitter object
+    const twitter = new Twitter(config);
+    // Twitter Auth check
+    if (event.httpMethod === 'GET') {
+      const params = await Joi.validate(
+        event.queryStringParameters, _crcTokenSchema);
+      const response = await twitter.crcResponse(params.crc_token);
+      console.log('Respond to Twitter CRC request.', response);
+      crcResponse(callback, 200, response);
+
+    // Reply to DM
+    } else if (event.httpMethod === 'POST') {
+      // Check request is authentic
+      const headers = await Joi.validate(event.headers, _dmHeaderSchema,
+        {stripUnknown: true});
+      const payload = await Joi.validate(event.body, _dmBodySchema);
+      const signed = twitter.signatureValidation(
+        headers['X-Twitter-Webhooks-Signature'], event.body);
+      // Async loop through incoming DMs
+      if (signed === true) {
+        if (payload.direct_message_events) {
+          // Loop messages (synchronous)
+          for (const item of payload.direct_message_events) {
+            if (item.type === 'message_create' &&
+              item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
+              try {
+                console.log(JSON.stringify(item));
+                await twitter.sendReply(item);
+                console.log('Sent twitter reply');
+              } catch (err) {
+                console.log('Error sending reply. ' + err.message);
+              }
+            }
+          }
+          handleResponse(callback, 200, {});
+        }
+      } else {
+        console.log('Request signature did not match');
+        handleResponse(callback, 403, {});
+      }
+    }
+  // Handle errors
+  } catch (err) {
+    if (err.isJoi) {
+      handleResponse(callback, 400, err.details[0].message);
+      console.log('Validation error: ' + err.details[0].message);
     } else {
-      const response = {
-        statusCode: 400,
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Required for CORS
-          'Access-Control-Allow-Credentials': true,
-        },
-        body: JSON.stringify({'message':
-          `Error: crc_token missing from request.`}),
-      };
-      callback(null, response);
+      console.log('err', err);
+      handleResponse(callback, 500, err.message);
+      console.log('Error: ' + err.message);
     }
-  } else if (event.method === 'POST') {
-      receive(config).process(event)
-        .then(callback(null))
-        .catch((err) => {
-          console.log('error is here in post: ' + err);
-          callback(null);
-        });
-    }
-  };
+  }
+};
