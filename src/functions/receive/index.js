@@ -13,7 +13,7 @@ const _crcTokenSchema = Joi.object().keys({
 
 const _dmBodySchema = Joi.object().required();
 
-const _dmHeaderSchema = Joi.object().required().keys({
+const _dmHeaderSchema = Joi.object().keys({
   'X-Twitter-Webhooks-Signature': Joi.string().required(),
 });
 
