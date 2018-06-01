@@ -49,12 +49,13 @@ export default class Twitter {
     * @param {Object} body - incoming body
     **/
     signatureValidation(signature, body) {
-        const hash = crypto.createHmac('sha256', 
+        const hash = crypto.createHmac('sha256',
             this.config.TWITTER_CONSUMER_SECRET)
             .update(body)
             .digest('base64');
         const hashstring = 'sha256=' + hash;
-        const state = crypto.timingSafeEqual(Buffer.from(hashstring), Buffer.from(signature))
+        const state = crypto.timingSafeEqual(
+            Buffer.from(hashstring), Buffer.from(signature));
 
         console.log(hashstring);
         console.log(signature);
