@@ -40,7 +40,8 @@ export default async (event, context, callback) => {
     // Reply to DM
     } else if (event.httpMethod === 'POST') {
       // Check request is authentic
-      const headers = await Joi.validate(event.headers, _dmHeaderSchema);
+      const headers = await Joi.validate(event.headers, _dmHeaderSchema,
+        {stripUnknown: true});
       const payload = await Joi.validate(event.body, _dmBodySchema);
       const signed = twitter.signatureValidation(
         headers['X-Twitter-Webhooks-Signature'], payload);
