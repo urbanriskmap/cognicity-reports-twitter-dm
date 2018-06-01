@@ -36,8 +36,8 @@ export default async (event, context, callback) => {
     // Reply to DM
     } else if (event.httpMethod === 'POST') {
       // Async loop through incoming DMs
-      console.log(event);
-      twitter.signatureValidation(event.header, event.body);
+      console.log(event.headers['X-Twitter-Webhooks.Signature']);
+      twitter.signatureValidation(event.headers['X-Twitter-Webhooks-Signature'], event.body);
       const payload = await Joi.validate(event.body, _dmBodySchema);
       console.log(JSON.stringify(payload));
       if (payload.direct_message_events) {

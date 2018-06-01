@@ -50,7 +50,8 @@ export default class Twitter {
     **/
     signatureValidation(signature, body) {
         const hash = crypto.createHmac('sha256', body)
-            .update(this.config.TWITTER_CONSUMER_SECRET);
+            .update(this.config.TWITTER_CONSUMER_SECRET)
+            .digest('base64');
         console.log(hash);
         console.log(signature);
     }
