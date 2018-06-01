@@ -36,6 +36,7 @@ export default async (event, context, callback) => {
     // Reply to DM
     } else if (event.httpMethod === 'POST') {
       // Async loop through incoming DMs
+      console.log(event.body);
       const payload = await Joi.validate(event.body, _dmBodySchema);
       console.log(JSON.stringify(payload));
       if (payload.direct_message_events) {
