@@ -42,7 +42,9 @@ export default async (event, context, callback) => {
       // Check request is authentic
       const headers = await Joi.validate(event.headers, _dmHeaderSchema,
         {stripUnknown: true});
+        console.log(headers)
       const payload = await Joi.validate(event.body, _dmBodySchema);
+      console.log(headers);
       const signed = twitter.signatureValidation(
         headers['X-Twitter-Webhooks-Signature'], payload);
       // Async loop through incoming DMs
