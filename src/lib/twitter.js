@@ -203,11 +203,19 @@ export default class Twitter {
     * Prepare and send a thank you message to user with report ID
     * @method sendThanks
     * @param {Object} body - HTTP body request object
+    * @param {String} body.reportId - report identifier for uniquie link
+    * @param {String} body.language - language of response
+    * @param {String} body.instanceRegionCode - CogniCity region code
     * @return {Promise} - Result of request
     **/
     sendThanks(body) {
         return new Promise(async (resolve, reject) => {
             try {
+                // Handle null instance region code
+                if (body.instanceRegionCode === 'null') {
+                    body.instanceRegionCode =
+                        this.config.DEFAULT_INSTANCE_REGION_CODE;
+                }
                 const thanks = await this.bot.thanks(body);
                 const card = await this.bot.card(body);
                 const properties = {
