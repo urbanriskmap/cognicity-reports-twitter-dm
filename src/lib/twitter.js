@@ -189,10 +189,11 @@ export default class Twitter {
   **/
   _sendMessage(properties) {
     return new Promise((resolve, reject) => {
-        console.log('Sending request to Twitter.');
+        console.log('Sending request to Twitter');
         this.request.post(properties, function(err, response, body) {
             if (err) {
                 console.log('Error sending request to Twitter. ', err);
+                reject(err);
             }
             resolve(null);
         });
@@ -203,11 +204,19 @@ export default class Twitter {
     * Prepare and send a thank you message to user with report ID
     * @method sendThanks
     * @param {Object} body - HTTP body request object
+    * @param {String} body.reportId - report identifier for uniquie link
+    * @param {String} body.language - language of response
+    * @param {String} body.instanceRegionCode - CogniCity region code
     * @return {Promise} - Result of request
     **/
     sendThanks(body) {
         return new Promise(async (resolve, reject) => {
             try {
+                // Handle null instance region code
+                if (body.instanceRegionCode === 'null') {
+                    body.instanceRegionCode =
+                        this.config.DEFAULT_INSTANCE_REGION_CODE;
+                }
                 const thanks = await this.bot.thanks(body);
                 const card = await this.bot.card(body);
                 const properties = {
@@ -217,8 +226,8 @@ export default class Twitter {
                     language: body.language,
                 };
                 const response = await this._prepareThanksResponse(properties);
-                resolve(this._sendMessage(response));
                 console.log('Sending thanks message');
+                resolve(this._sendMessage(response));
             } catch (err) {
                 console.log('Error sending thanks message.', err);
                 reject(err);
@@ -233,6 +242,7 @@ export default class Twitter {
     * @return {Promise} - Result of request
     **/
     sendReply(dmEvent) {
+        console.log('send reply is fired');
         return new Promise(async (resolve, reject) => {
             const properties = {
                 userId: dmEvent.message_create.sender_id,
