@@ -189,10 +189,11 @@ export default class Twitter {
   **/
   _sendMessage(properties) {
     return new Promise((resolve, reject) => {
-        console.log('Sending request to Twitter.');
+        console.log('Sending request to Twitter');
         this.request.post(properties, function(err, response, body) {
             if (err) {
                 console.log('Error sending request to Twitter. ', err);
+                reject(err);
             }
             resolve(null);
         });
@@ -225,8 +226,8 @@ export default class Twitter {
                     language: body.language,
                 };
                 const response = await this._prepareThanksResponse(properties);
-                resolve(this._sendMessage(response));
                 console.log('Sending thanks message');
+                resolve(this._sendMessage(response));
             } catch (err) {
                 console.log('Error sending thanks message.', err);
                 reject(err);
@@ -241,6 +242,7 @@ export default class Twitter {
     * @return {Promise} - Result of request
     **/
     sendReply(dmEvent) {
+        console.log('send reply is fired');
         return new Promise(async (resolve, reject) => {
             const properties = {
                 userId: dmEvent.message_create.sender_id,
