@@ -21,3 +21,6 @@ v0.0.3
 
 v0.0.4
 - Added user id blacklist
+- improved error handling in Lambda functions
+- added unit tests for twitter.js
+- updated node modules
