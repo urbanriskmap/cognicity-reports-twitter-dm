@@ -11,7 +11,7 @@ export default {
     DEFAULT_LANGUAGE: process.env.DEFAULT_LANGUAGE || 'en',
     MAP_URL: process.env.MAP_URL || 'https://riskmap.us/',
     TWITTER_CONSUMER_KEY: process.env.TWITTER_CONSUMER_KEY,
-    TWITTER_CONSUMER_SECRET: process.env.TWITTER_CONSUMER_SECRET,
+    TWITTER_CONSUMER_SECRET: process.env.TWITTER_CONSUMER_SECRET || 'secret',
     TWITTER_TOKEN: process.env.TWITTER_TOKEN,
     TWITTER_TOKEN_SECRET: process.env.TWITTER_TOKEN_SECRET,
     TWITTER_BOT_USER_ID: process.env.TWITTER_BOT_USER_ID,
