@@ -18,3 +18,6 @@ v0.0.3
 - Removed serverless requirement
 - Add request signature verification
 - Change to use Twitter buttons
+
+v0.0.4
+- Added user id blacklist

@@ -2,6 +2,7 @@ require('dotenv').config({silent: true});
 
 export default {
     API_GW_WEBHOOK: process.env.API_GW_WEBHOOK,
+    BLACKLIST: (process.env.BLACKLIST || '').split(','),
     CARDS_API: process.env.CARDS_API || 'https://data.riskmap.us/cards/',
     CARDS_API_KEY: process.env.CARDS_API_KEY,
     CARDS_URL: process.env.CARDS_URL || 'https://cards.riskmap.us/flood/',
