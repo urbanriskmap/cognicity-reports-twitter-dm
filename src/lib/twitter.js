@@ -227,7 +227,8 @@ export default class Twitter {
                 };
                 const response = await this._prepareThanksResponse(properties);
                 console.log('Sending thanks message');
-                resolve(this._sendMessage(response));
+                const send = await this._sendMessage(response);
+                resolve(send);
             } catch (err) {
                 console.log('Error sending thanks message.', err);
                 reject(err);
@@ -256,7 +257,8 @@ export default class Twitter {
                     message: message,
                     language: properties.language,
                 });
-                resolve(this._sendMessage(response));
+                const send = await this._sendMessage(response);
+                resolve(send);
             } catch (err) {
                 console.log('Error responding to dmEvent.', err.message);
                 reject(err);

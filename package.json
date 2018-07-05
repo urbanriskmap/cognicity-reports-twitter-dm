@@ -17,8 +17,8 @@
   "author": "Tomas Holderness",
   "license": "GPL-3.0",
   "dependencies": {
-    "@urbanriskmap/cognicity-bot-core": "^1.0.2",
-    "dotenv": "^4.0.0",
+    "@urbanriskmap/cognicity-bot-core": "^1.0.3",
+    "dotenv": "^6.0.0",
     "joi": "^13.4.0",
     "oauth": "^0.9.15",
     "request": "^2.87.0"
@@ -27,11 +27,11 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^4.1.6",
     "babel-preset-es2015": "^6.24.1",
-    "coveralls": "^2.13.1",
-    "eslint": "^4.19.1",
+    "coveralls": "^3.0.2",
+    "eslint": "^5.0.1",
     "eslint-config-google": "^0.9.1",
-    "mocha": "^3.5.3",
-    "nyc": "^11.9.0",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
     "unit.js": "^2.0.0"
   }
 }
