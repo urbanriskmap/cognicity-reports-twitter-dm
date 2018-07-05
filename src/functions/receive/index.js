@@ -52,7 +52,7 @@ export default async (event, context, callback) => {
           for (const item of payload.direct_message_events) {
             if (item.type === 'message_create' &&
               item.message_create.sender_id !== config.TWITTER_BOT_USER_ID &&
-              item.message_create.sender_id.isIndexOf(config.BLACKLIST) === -1
+              item.message_create.sender_id.indexOf(config.BLACKLIST) === -1
             ) {
               try {
                 console.log(JSON.stringify(item));
