@@ -24,3 +24,4 @@ v0.0.4
 - improved error handling in Lambda functions
 - added unit tests for twitter.js
 - updated node modules
+- updated README
