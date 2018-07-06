@@ -53,7 +53,6 @@ export default async (event, context, callback) => {
         headers['X-Twitter-Webhooks-Signature'], event.body);
       // Async loop through incoming DMs
       if (signed === true) {
-        console.log(JSON.stringify(payload));
         if (payload.direct_message_events) {
           // Loop messages (synchronous)
           for (const item of payload.direct_message_events) {
