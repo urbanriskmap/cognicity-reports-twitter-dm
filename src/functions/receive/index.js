@@ -53,13 +53,10 @@ export default async (event, context, callback) => {
         headers['X-Twitter-Webhooks-Signature'], event.body);
       // Async loop through incoming DMs
       if (signed === true) {
+        console.log(JSON.stringify(payload));
         if (payload.direct_message_events) {
           // Loop messages (synchronous)
           for (const item of payload.direct_message_events) {
-              console.log(
-                item.message_create.sender_id.indexOf(config.BLACKLIST));
-              console.log(item.message_create.sender_id);
-              console.log(config.BLACKLIST);
             if (item.type === 'message_create' && 
             item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
               try {
@@ -69,7 +66,6 @@ export default async (event, context, callback) => {
                     throw new Error('User in blacklist');
                   }
                 });
-                console.log(JSON.stringify(item));
                 await twitter.sendReply(item);
                 console.log('Sent twitter reply');
               } catch (err) {
