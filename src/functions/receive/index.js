@@ -56,7 +56,7 @@ export default async (event, context, callback) => {
         if (payload.direct_message_events) {
           // Loop messages (synchronous)
           for (const item of payload.direct_message_events) {
-            if (item.type === 'message_create' && 
+            if (item.type === 'message_create' &&
             item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
               try {
                 // Check user not in blacklist
