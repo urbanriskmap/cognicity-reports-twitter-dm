@@ -27,6 +27,12 @@ const _dmHeaderSchema = Joi.object().keys({
 export default async (event, context, callback) => {
   try {
     console.log('Handler running');
+
+    // Require bot user id to be in blacklist
+    if (config.BLACKLIST.length < 1) {
+      throw new Error('Blacklist is empty. Will now exit');
+    }
+
     // Twitter object
     const twitter = new Twitter(config);
     // Twitter Auth check
@@ -55,8 +61,7 @@ export default async (event, context, callback) => {
               console.log(item.message_create.sender_id);
               console.log(config.BLACKLIST);
             if (item.type === 'message_create' &&
-              item.message_create.sender_id !== config.TWITTER_BOT_USER_ID
-            ) {
+              item.message_create.sender_id.indexOf(config.BLACKLIST) < 0) {
               try {
                 console.log(JSON.stringify(item));
                 await twitter.sendReply(item);
@@ -64,6 +69,8 @@ export default async (event, context, callback) => {
               } catch (err) {
                 console.log('Error sending reply. ' + err.message);
               }
+            } else {
+              console.log('Sender ID in blacklist, no response sent');
             }
           }
           handleResponse(callback, 200, {});

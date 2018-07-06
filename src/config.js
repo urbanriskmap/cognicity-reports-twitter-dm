@@ -14,6 +14,5 @@ export default {
     TWITTER_CONSUMER_SECRET: process.env.TWITTER_CONSUMER_SECRET || 'secret',
     TWITTER_TOKEN: process.env.TWITTER_TOKEN,
     TWITTER_TOKEN_SECRET: process.env.TWITTER_TOKEN_SECRET,
-    TWITTER_BOT_USER_ID: process.env.TWITTER_BOT_USER_ID,
     TWITTER_ENDPOINT: process.env.TWITTER_ENDPOINT || 'https://api.twitter.com/1.1/',
 };
