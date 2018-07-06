@@ -29,8 +29,8 @@ export default async (event, context, callback) => {
     console.log('Handler running');
 
     // Require bot user id to be in blacklist
-    if (config.BLACKLIST.length < 1) {
-      throw new Error('Blacklist is empty. Will now exit');
+    if (config.BLACKLIST[0].length < 1) {
+      throw new Error('Blacklist is empty, or contains empty strings. Will now exit');
     }
 
     // Twitter object
