@@ -28,9 +28,9 @@ export default async (event, context, callback) => {
   try {
     console.log('Handler running');
 
-    // Require bot user id to be in blacklist
-    if (config.BLACKLIST[0].length < 1) {
-      throw new Error('Blacklist is empty, or contains empty strings. Will now exit');
+    // Require bot user id to be defined
+    if (config.TWITTER_BOT_USER_ID.length < 1) {
+      throw new Error('Twitter bot user ID is empty. Will now exit.');
     }
 
     // Twitter object
@@ -60,17 +60,20 @@ export default async (event, context, callback) => {
                 item.message_create.sender_id.indexOf(config.BLACKLIST));
               console.log(item.message_create.sender_id);
               console.log(config.BLACKLIST);
-            if (item.type === 'message_create' &&
-              item.message_create.sender_id.indexOf(config.BLACKLIST) < 0) {
+            if (item.type === 'message_create') {
               try {
+                // Check user not in blacklist
+                config.BLACKLIST.find(function(element) {
+                  if (element === item.message_create.sender_id) {
+                    throw new Error('User in blacklist');
+                  }
+                });
                 console.log(JSON.stringify(item));
                 await twitter.sendReply(item);
                 console.log('Sent twitter reply');
               } catch (err) {
                 console.log('Error sending reply. ' + err.message);
               }
-            } else {
-              console.log('Sender ID in blacklist, no response sent');
             }
           }
           handleResponse(callback, 200, {});
