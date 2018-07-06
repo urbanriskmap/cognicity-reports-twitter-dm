@@ -1,13 +1,52 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda.svg?branch=master)](https://travis-ci.org/urbanriskmap/twitter-dm-bot-lamda) [![Coverage Status](https://coveralls.io/repos/github/urbanriskmap/twitter-dm-bot-lamda/badge.svg?branch=dev)](https://coveralls.io/github/urbanriskmap/twitter-dm-bot-lamda?branch=dev)
 
-## Twitter DM Bot
-Allows twitter users to submit flood reports via Twitter direct message (dm) chat bot.
-Part of the CogniCity platform, deployed for [Urban Risk Map](https://riskmap.us).
+## cognicity-reports-twitter-dm
 
-![RiskMap bot](https://raw.githubusercontent.com/urbanriskmap/twitter-dm-bot-lamda/master/doc/images/bot.png)
+Allows Twitter users to submit flood reports via a Twitter Direct Message (DM) chat bot.
+
+This module deploys AWS lambda functions that, after a user initiates a conversation via Twitter direct messages, uses the cognicity-bot-core module to fetch a report card from a CogniCity server and sends it to the user. The module also sends thank you messages once a user has submitted a flood report.
+
+
+### Install
+`npm install`
+
+### Deployment
+Adjust .travis.yml to deploy via Travis as need.
+
+
+## Getting Started
+
+* Register Twitter account for the [Account Activity API](https://developer.twitter.com/en/docs/accounts-and-users/subscribe-account-activity/overview)
+* Create an application, dev environment and subscription for the [Twitter account](https://developer.twitter.com/en/account/environments)
+* Copy tokens and secrets from https://apps.twitter.com (see configuration below)
+* Deploy functions to AWS Lambda
+* Connect functions to an AWS API gateway instance
+* Add the API gateway endpoint URL to `src/config.js`
+* Create a subscription using the `commands/add-subscription.js` script
+* Register a webhook using the `commands/add-webhook.js` script
+* Test the chatbot
+
+### Configuration
+
+Configuration variables are as follows (these should be set in the Lambda environment):
+* `API_GW_WEBHOOK` - the API gateway address for the webhook endpoint. Currently this is unused.
+* `BLACKLIST` - list of comma seperated twitter user ID numbers to exclude from chatbot replies (e.g. '123,456,789')
+* `CARDS_API` - the endpoint to get new report cards
+* `CARDS_API_KEY` - the api key for the cards endpoint
+* `CARDS_URL` - the URL for the card resources to be sent to the user
+* `DEFAULT_INSTANCE_REGION_CODE` - in case a report is submitted outside the city, the code that the bot should fall back on for geographic reference
+* `DEFAULT_LANGUAGE` - default language for user interactions
+* `MAP_URL` - the risk map URL
+* `TWITTER_CONSUMER_KEY` - Twitter consumer key
+* `TWITTER_CONSUMER_SECRET` - Twitter consumer secret
+* `TWITTER_TOKEN` - Twitter token
+* `TWITTER_TOKEN_SECRET` - Twitter secret token
+* `TWITTER_BOT_USER_ID` - the user ID for the bot (stop self replies) !important
+* `TWITTER_ENDPOINT` - Twitter's API
+
 
 ### Building
-Built in ES6, compiled with Babel, deployed to AWS Lambda using Serverless.
+Built in ES6, compiled with Babel, deployed to AWS Lambda using Travis.
 Run
 `npm run build`
 
@@ -31,22 +70,4 @@ Run unit tests (mocha + unit) and ESLint
 ### Design Patterns
 - functions that make external calls should return a promise
 - internal methods can be simple functions
-- functionality should be testable without excessive mocking
 - Use JSDoc comments throughout
-
-## Setup Twitter Acitivty API notes
-TODO.
-- reference: https://github.com/twitterdev/twitter-webhook-boilerplate-node/blob/master/example_scripts/welcome_messages/create-welcome-message.js
-### Incoming messages
-
-1.) Create twitter app and enable DMs. This is the account registered for the activity API (e.g. @petabencana)
-2.) Use xxx script to register a webhook for scripts. store the webhook id somewhere
-3.) Use Twurl to register account that will send/receive DMs against twitter app (e.g. @riskmapus)
-4.) Use xxx script to register endpoint against a specific account for the activity API to monitor (e.g. @riskmapus)
-5.) Push default messages
-6.) Take the app key for the above app and pase it into the VARIABLE...
-
-### Outgoing messages
-1.) Register a new separate app against the account which will reply (e.g. @riskmapus)
-2.) Paste the account ID into the lambda to avoid self spam
-3.) Paste keys into VARIABLES for replies
