@@ -60,7 +60,8 @@ export default async (event, context, callback) => {
                 item.message_create.sender_id.indexOf(config.BLACKLIST));
               console.log(item.message_create.sender_id);
               console.log(config.BLACKLIST);
-            if (item.type === 'message_create') {
+            if (item.type === 'message_create' && 
+            item.message_create.sender_id !== config.TWITTER_BOT_USER_ID) {
               try {
                 // Check user not in blacklist
                 config.BLACKLIST.find(function(element) {
