@@ -11,12 +11,22 @@
     },
     "es": {
         "text": {
-            "welcome": "[ES} Welcome to RiskMap bot. Click 'Get Started' or send me a message.",
-            "start": "[ES] Get Started",
-            "report": "[ES] Report flooding",
-            "map": "[ES] View live reports",
-            "view": "[ES] View your report",
-            "add": "[ES] Add another report"
+            "welcome": "Bienvenido a RiskMap bot. Haga clic en 'Comenzar' o envíeme un mensaje.",
+            "start": "> Comienzo",
+            "report": "Inportar inundaciones",
+            "map": "Ver el mapa de inundación en vivo",
+            "view": "Ver su informe",
+            "add": "Agregar otro informe"
+        }
+    },
+    "in": {
+        "text": {
+          "welcome": "Welcome to RiskMap bot. Click 'Get Started' or send me a message.",
+          "start": "> Get Started",
+          "report": "Report flooding",
+          "map": "View live flood map",
+          "view": "View your report",
+          "add": "Add another report"
         }
     }
 }

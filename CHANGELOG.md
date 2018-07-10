@@ -25,3 +25,4 @@ v0.0.4
 - added unit tests for twitter.js
 - updated node modules
 - updated README
+- add additional setup command scripts
