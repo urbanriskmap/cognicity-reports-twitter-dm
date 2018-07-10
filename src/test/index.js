@@ -9,5 +9,7 @@
 // Unit tests
 
 import testTwitter from './testTwitter';
+import testLocale from './testLocale';
 
 testTwitter();
+testLocale();
