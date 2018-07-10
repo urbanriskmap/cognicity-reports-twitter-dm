@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 require('dotenv').config({silent: true});
 
 export default {
