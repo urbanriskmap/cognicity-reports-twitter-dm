@@ -3,7 +3,6 @@ import request from 'request';
 
 // Locals
 import Bot from '@urbanriskmap/cognicity-bot-core';
-import messages from './messages.json';
 import buttons from './buttons.json';
 
 /**
@@ -19,7 +18,9 @@ export default class Twitter {
      */
     constructor(config) {
         this.config = config;
-        this.config.MESSAGES = messages;
+        this.config.MESSAGES = require('./messages-' +
+            this.config.DEFAULT_INSTANCE_COUNTRY_CODE +
+            '.json');
         this.bot = new Bot(this.config);
         this.request = request;
     }
