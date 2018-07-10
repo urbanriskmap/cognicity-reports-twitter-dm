@@ -34,6 +34,7 @@ Configuration variables are as follows (these should be set in the Lambda enviro
 * `CARDS_API` - the endpoint to get new report cards
 * `CARDS_API_KEY` - the api key for the cards endpoint
 * `CARDS_URL` - the URL for the card resources to be sent to the user
+* `DEFAULT_INSTANCE_COUNTRY_CODE` - default country code for deployment (e.g. 'us')
 * `DEFAULT_INSTANCE_REGION_CODE` - in case a report is submitted outside the city, the code that the bot should fall back on for geographic reference
 * `DEFAULT_LANGUAGE` - default language for user interactions
 * `MAP_URL` - the risk map URL
