@@ -3,8 +3,8 @@ import request from 'request';
 
 // Locals
 import Bot from '@urbanriskmap/cognicity-bot-core';
-import messages from './messages.json';
 import buttons from './buttons.json';
+import Locale from './locale';
 
 /**
  * Class for sending CogniCity messages via Twitter DM
@@ -19,9 +19,12 @@ export default class Twitter {
      */
     constructor(config) {
         this.config = config;
-        this.config.MESSAGES = messages;
+        this.config.MESSAGES = require('./messages-' +
+            this.config.DEFAULT_INSTANCE_COUNTRY_CODE +
+            '.json');
         this.bot = new Bot(this.config);
         this.request = request;
+        this.locale = new Locale(this.config);
     }
 
    /**
@@ -244,13 +247,19 @@ export default class Twitter {
     **/
     sendReply(dmEvent) {
         console.log('send reply is fired');
+        console.log(JSON.stringify(dmEvent));
         return new Promise(async (resolve, reject) => {
-            const properties = {
-                userId: dmEvent.message_create.sender_id,
-                language: this.config.DEFAULT_LANGUAGE, // TODO - use msg lang
-                network: 'twitter',
-            };
             try {
+                // Get user locale
+                const locale = await this.locale.get(
+                    dmEvent.message_create.sender_id);
+
+                const properties = {
+                    userId: dmEvent.message_create.sender_id,
+                    language: locale,
+                    network: 'twitter',
+                };
+
                 const message = await this.bot.card(properties);
                 const response = this._prepareCardResponse({
                     userId: properties.userId,

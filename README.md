@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.org/urbanriskmap/cognicity-reports-twitter-dm.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-reports-twitter-dm) [![Coverage Status](https://coveralls.io/repos/github/urbanriskmap/cognicity-reports-twitter-dm/badge.svg?branch=master)](https://coveralls.io/github/urbanriskmap/cognicity-reports-twitter-dm?branch=master)
+[![Build Status](https://travis-ci.org/urbanriskmap/cognicity-reports-twitter-dm.svg?branch=master)](https://travis-ci.org/urbanriskmap/cognicity-reports-twitter-dm) [![Coverage Status](https://coveralls.io/repos/github/urbanriskmap/cognicity-reports-twitter-dm/badge.svg?branch=master)](https://coveralls.io/github/urbanriskmap/cognicity-reports-twitter-dm?branch=master) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0) 
 
 ## cognicity-reports-twitter-dm
 
@@ -34,6 +34,7 @@ Configuration variables are as follows (these should be set in the Lambda enviro
 * `CARDS_API` - the endpoint to get new report cards
 * `CARDS_API_KEY` - the api key for the cards endpoint
 * `CARDS_URL` - the URL for the card resources to be sent to the user
+* `DEFAULT_INSTANCE_COUNTRY_CODE` - default country code for deployment (e.g. 'us')
 * `DEFAULT_INSTANCE_REGION_CODE` - in case a report is submitted outside the city, the code that the bot should fall back on for geographic reference
 * `DEFAULT_LANGUAGE` - default language for user interactions
 * `MAP_URL` - the risk map URL

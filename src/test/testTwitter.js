@@ -34,6 +34,13 @@ export default function() {
           callback(new Error('1'));
         }
       };
+
+      // Mock locale lib
+      twitter.locale.get = function(userId) {
+        return new Promise((resolve, reject) => {
+          resolve('en');
+        });
+      };
     });
 
     it('Creates class', function(done) {
