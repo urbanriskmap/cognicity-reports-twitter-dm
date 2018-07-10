@@ -5,5 +5,4 @@ env.yml
 bin/
 .nyc_output/
 private/
-.env
-.env-dev
+.env*
