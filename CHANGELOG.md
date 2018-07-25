@@ -29,3 +29,4 @@ v0.0.4
 - add user locale support
 
 v0.0.5
+- update cognicity-bot-core module
