@@ -27,3 +27,5 @@ v0.0.4
 - updated README
 - add additional setup command scripts
 - add user locale support
+
+v0.0.5
