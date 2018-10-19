@@ -21,7 +21,7 @@ Adjust .travis.yml to deploy via Travis as need.
 * Copy tokens and secrets from https://apps.twitter.com (see configuration below)
 * Deploy functions to AWS Lambda
 * Connect functions to an AWS API gateway instance
-* Add the API gateway endpoint URL to `src/config.js`
+* Add the API gateway endpoint URL to `src/config.js` (or set process.env)
 * Create a subscription using the `commands/add-subscription.js` script
 * Register a webhook using the `commands/add-webhook.js` script
 * Test the chatbot
