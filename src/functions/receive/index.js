@@ -41,6 +41,7 @@ export default async (event, context, callback) => {
         event.queryStringParameters, _crcTokenSchema);
       const response = await twitter.crcResponse(params.crc_token);
       console.log('Respond to Twitter CRC request.', response);
+      console.log('Incoming parameters, ', event.queryStringParameters);
       crcResponse(callback, 200, response);
 
     // Reply to DM
