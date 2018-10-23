@@ -1,16 +1,9 @@
 {
   "en": {
     "texts": {
-      "default": "RiskMap bot helps you report flooding in realtime. In life-threatening situations call 911.",
-      "card": "RiskMap bot helps you report flooding in realtime. In life-threatening situations call 911.",
+      "default": "RiskMap bot helps you report flooding in realtime. To report any life-threatening situation, please call emergency services.",
+      "card": "RiskMap bot helps you report flooding in realtime. To report any life-threatening situation, please call emergency services.",
       "thanks": "Thank you for your report. Click to see your report on the map."
-    }
-  },
-  "es": {
-    "texts": {
-      "default": "[ES] RiskMap bot helps you report flooding in realtime. In life-threatening situations call 911.",
-      "card": "[ES] RiskMap bot helps you report flooding in realtime. In life-threatening situations call 911.",
-      "thanks": "[ES] Thank you for your report. Click to see your report on the map."
     }
   }
 }

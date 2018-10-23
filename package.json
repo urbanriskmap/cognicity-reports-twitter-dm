@@ -1,6 +1,6 @@
 {
   "name": "cognicity-twitter-dm-lambda",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Twitter DM bot runnning on AWS lambda",
   "main": "index.js",
   "scripts": {
