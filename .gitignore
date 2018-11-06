@@ -6,3 +6,5 @@ bin/
 .nyc_output/
 private/
 .env*
+*.swp
+*.swo
