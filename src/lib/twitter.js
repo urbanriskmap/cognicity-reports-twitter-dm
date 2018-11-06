@@ -176,7 +176,7 @@ export default class Twitter {
       res.append({
         type: 'web_url',
         label: buttons[properties.language].text.addPrep,
-        url: properties.card.prepLink,
+        url: properties.message.prepLink,
       });
     }
     return res;
