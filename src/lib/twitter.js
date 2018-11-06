@@ -90,7 +90,7 @@ export default class Twitter {
     ];
 
     if ( this.config.CARDS_DECK.indexOf('prep') >= 0) {
-      res.append({
+      res.push({
         type: 'web_url',
         label: buttons[properties.language].text.addPrep,
         url: properties.card.prepLink,
@@ -173,7 +173,7 @@ export default class Twitter {
       }];
 
     if ( this.config.CARDS_DECK.indexOf('prep') >= 0) {
-      res.append({
+      res.push({
         type: 'web_url',
         label: buttons[properties.language].text.addPrep,
         url: properties.message.prepLink,
