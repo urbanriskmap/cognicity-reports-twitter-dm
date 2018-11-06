@@ -7,8 +7,8 @@
         "reportPrep": "Report infrastructure disruptions",
         "map": "View live flood map",
         "view": "View your report",
-        "add": "Add flood report",
-        "addPrep": "Add prep report"
+        "add": "Report flooding",
+        "addPrep": "Report disruptions"
       }
     },
     "es": {
@@ -30,8 +30,8 @@
           "reportPrep": "Report infrastructure disruptions",
           "map": "View live flood map",
           "view": "View your report",
-          "add": "Add another report",
-          "addPrep": "Add prep report"
+          "add": "Report flooding",
+          "addPrep": "Report disruptions"
         }
     }
 }

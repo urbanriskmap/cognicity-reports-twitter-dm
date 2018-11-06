@@ -82,11 +82,6 @@ export default class Twitter {
         label: buttons[properties.language].text.view,
         url: properties.thanks.link,
       },
-      {
-        type: 'web_url',
-        label: buttons[properties.language].text.add,
-        url: properties.card.link,
-      },
     ];
 
     if ( this.config.CARDS_DECK.indexOf('prep') >= 0) {
@@ -96,6 +91,12 @@ export default class Twitter {
         url: properties.card.prepLink,
       });
     }
+
+    res.push({
+        type: 'web_url',
+        label: buttons[properties.language].text.add,
+        url: properties.card.link,
+    });
     return res;
   }
 
@@ -165,11 +166,6 @@ export default class Twitter {
         type: 'web_url',
         label: buttons[properties.language].text.report,
         url: properties.message.link,
-      },
-      {
-        type: 'web_url',
-        label: buttons[properties.language].text.map,
-        url: this.config.MAP_URL,
       }];
 
     if ( this.config.CARDS_DECK.indexOf('prep') >= 0) {
@@ -179,6 +175,12 @@ export default class Twitter {
         url: properties.message.prepLink,
       });
     }
+
+    res.push({
+        type: 'web_url',
+        label: buttons[properties.language].text.map,
+        url: this.config.MAP_URL,
+      });
     return res;
   }
 
