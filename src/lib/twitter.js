@@ -64,6 +64,41 @@ export default class Twitter {
         return (state);
     }
 
+  /**
+   * Prepares Twitter buttons for thanks
+   * @method _getThanksButtons
+   * @private
+   * @param {Object} properties - Reply properties
+   * @param {String} properties.userId - User or Telegram chat ID for reply
+   * @param {Object} properties.card - Bot card message object
+   * @param {String} properties.language - User locale (e.g. 'en')
+   * @param {String} properties.thanks - Bot thanks message object
+   * @return {[Object]} - array of twitter buttons
+   **/
+  _getThanksButtons(properties) {
+    let res = [
+      {
+        type: 'web_url',
+        label: buttons[properties.language].text.view,
+        url: properties.thanks.link,
+      },
+      {
+        type: 'web_url',
+        label: buttons[properties.language].text.add,
+        url: properties.card.link,
+      },
+    ];
+
+    if ( this.config.CARDS_DECK.indexOf('prep') >= 0) {
+      res.append({
+        type: 'web_url',
+        label: buttons[properties.language].text.addPrep,
+        url: properties.card.prepLink,
+      });
+    }
+    return res;
+  }
+
     /**
     * Prepares Twitter message
     * @method _prepareThanksResponse
@@ -75,7 +110,8 @@ export default class Twitter {
     * @param {String} properties.thanks - Bot thanks message object
     * @return {Object} - Request object
     **/
- _prepareThanksResponse(properties) {
+  _prepareThanksResponse(properties) {
+    const buttons = this._getThanksButtons(properties);
     const body = {
         event: {
             type: 'message_create',
@@ -85,18 +121,7 @@ export default class Twitter {
                 },
                 message_data: {
                     text: properties.thanks.text,
-                    ctas: [
-                        {
-                        type: 'web_url',
-                        label: buttons[properties.language].text.view,
-                        url: properties.thanks.link,
-                        },
-                        {
-                        type: 'web_url',
-                        label: buttons[properties.language].text.add,
-                        url: properties.card.link,
-                        },
-                    ],
+                    ctas: buttons,
                 },
             },
         },
@@ -121,7 +146,41 @@ export default class Twitter {
         body: body,
     };
     return (request);
-}
+  }
+
+  /**
+    * Prepares Twitter buttons for initial message
+    * @method _getCardResponseButtons
+    * @private
+    * @param {Object} properties - Reply properties
+    * @param {String} properties.userId - User or Telegram chat ID for reply
+    * @param {Object} properties.card - Bot card message object
+    * @param {String} properties.language - User locale (e.g. 'en')
+    * @param {String} properties.thanks - Bot thanks message object
+    * @return {[Object]} - array of twitter buttons
+    **/
+  _getCardResponseButtons(properties) {
+    let res = [
+      {
+        type: 'web_url',
+        label: buttons[properties.language].text.report,
+        url: properties.message.link,
+      },
+      {
+        type: 'web_url',
+        label: buttons[properties.language].text.map,
+        url: this.config.MAP_URL,
+      }];
+
+    if ( this.config.CARDS_DECK.indexOf('prep') >= 0) {
+      res.append({
+        type: 'web_url',
+        label: buttons[properties.language].text.addPrep,
+        url: properties.card.prepLink,
+      });
+    }
+    return res;
+  }
 
   /**
     * Prepares Twitter message
@@ -134,6 +193,7 @@ export default class Twitter {
     * @return {Object} - Request object
   **/
     _prepareCardResponse(properties) {
+      const buttons = this._getCardResponseButtons(properties);
         const body = {
             event: {
             type: 'message_create',
@@ -144,16 +204,7 @@ export default class Twitter {
                 message_data: {
                 text: properties.message.text,
                 ctas: [
-                    {
-                    type: 'web_url',
-                    label: buttons[properties.language].text.report,
-                    url: properties.message.link,
-                    },
-                    {
-                    type: 'web_url',
-                    label: buttons[properties.language].text.map,
-                    url: this.config.MAP_URL,
-                    },
+                  buttons,
                 ],
                 },
             },

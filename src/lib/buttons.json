@@ -4,9 +4,11 @@
         "welcome": "Welcome to RiskMap bot. Click 'Get Started' or send me a message.",
         "start": "> Get Started",
         "report": "Report flooding",
+        "reportPrep": "Report infrastructure disruptions",
         "map": "View live flood map",
         "view": "View your report",
-        "add": "Add another report"
+        "add": "Add flood report",
+        "addPrep": "Add prep report"
       }
     },
     "es": {
@@ -16,7 +18,8 @@
             "report": "Inportar inundaciones",
             "map": "Ver el mapa de inundación en vivo",
             "view": "Ver su informe",
-            "add": "Agregar otro informe"
+            "add": "Agregar otro informe de innundaccion",
+            "addPrep": "Ayude a preparar"
         }
     },
     "in": {
@@ -24,9 +27,11 @@
           "welcome": "Welcome to RiskMap bot. Click 'Get Started' or send me a message.",
           "start": "> Get Started",
           "report": "Report flooding",
+          "reportPrep": "Report infrastructure disruptions",
           "map": "View live flood map",
           "view": "View your report",
-          "add": "Add another report"
+          "add": "Add another report",
+          "addPrep": "Add prep report"
         }
     }
 }

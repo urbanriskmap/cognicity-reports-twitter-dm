@@ -7,6 +7,7 @@ export default {
     BLACKLIST: (process.env.BLACKLIST || '').split(','),
     CARDS_API: process.env.CARDS_API || 'https://data.riskmap.us/cards/',
     CARDS_API_KEY: process.env.CARDS_API_KEY,
+    CARDS_DECK: (process.env.CARDS_DECK || 'flood').split(','),
     CARDS_URL: process.env.CARDS_URL || 'https://cards.riskmap.us/flood/',
     DEFAULT_INSTANCE_COUNTRY_CODE: process.env.DEFAULT_INSTANCE_COUNTRY_CODE || 'us',
     DEFAULT_INSTANCE_REGION_CODE: process.env.DEFAULT_INSTANCE_REGION_CODE ||
