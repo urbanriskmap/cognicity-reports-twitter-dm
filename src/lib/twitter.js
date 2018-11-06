@@ -203,9 +203,7 @@ export default class Twitter {
                 },
                 message_data: {
                 text: properties.message.text,
-                ctas: [
-                  buttons,
-                ],
+                ctas: buttons,
                 },
             },
             },
