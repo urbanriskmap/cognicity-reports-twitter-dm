@@ -231,7 +231,7 @@ export default class Twitter {
     }
 
   /**
-    * Send Facebook message
+    * Send Twitter message
     * @method _sendMessage
     * @private
     * @param {Object} properties - Properties of request
@@ -279,6 +279,7 @@ export default class Twitter {
                 };
                 const response = await this._prepareThanksResponse(properties);
                 console.log('Sending thanks message');
+                console.log(JSON.stringify(response));
                 const send = await this._sendMessage(response);
                 resolve(send);
             } catch (err) {
@@ -315,6 +316,9 @@ export default class Twitter {
                     message: message,
                     language: properties.language,
                 });
+
+                console.log('Sending reply message');
+                console.log(JSON.stringify(response));
                 const send = await this._sendMessage(response);
                 resolve(send);
             } catch (err) {
