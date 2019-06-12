@@ -248,8 +248,7 @@ export default class Twitter {
             if (err) {
                 console.log('Error sending request to Twitter. ', err);
                 reject(err);
-            }
-            else {
+            } else {
                 console.log('No Error, response from twitter ', response);
             }
             resolve(null);
@@ -306,8 +305,8 @@ export default class Twitter {
         return new Promise(async (resolve, reject) => {
             try {
                 // Get user locale
-                const locale = await this.locale.get(
-                    dmEvent.message_create.sender_id);
+                // const locale = await this.locale.get(
+                //    dmEvent.message_create.sender_id);
 
                 const properties = {
                     userId: dmEvent.message_create.sender_id,
