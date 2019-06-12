@@ -311,7 +311,7 @@ export default class Twitter {
 
                 const properties = {
                     userId: dmEvent.message_create.sender_id,
-                    language: locale,
+                    language: 'en',
                     network: 'twitter',
                 };
 
