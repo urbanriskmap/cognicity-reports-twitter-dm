@@ -305,8 +305,8 @@ export default class Twitter {
         return new Promise(async (resolve, reject) => {
             try {
                 // Get user locale
-                // const locale = await this.locale.get(
-                //    dmEvent.message_create.sender_id);
+                // twitter changed user api, so now language is 
+                // hardcoded to english down below.
 
                 const properties = {
                     userId: dmEvent.message_create.sender_id,
