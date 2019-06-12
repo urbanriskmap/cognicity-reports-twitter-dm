@@ -249,6 +249,9 @@ export default class Twitter {
                 console.log('Error sending request to Twitter. ', err);
                 reject(err);
             }
+            else {
+                console.log('No Error, response from twitter ', response);
+            }
             resolve(null);
         });
     });
